@@ -129,7 +129,10 @@ function isCrossOriginModelPath(modelPath: string): boolean {
   }
 }
 
-async function validateModelHeader(modelPath: string): Promise<{ ok: true } | { ok: false; reason: string }> {
+async function validateModelHeader(modelPath: string): Promise<
+  | { ok: true }
+  | { ok: false; fatal: boolean; reason: string }
+> {
   try {
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 8000);
@@ -143,14 +146,18 @@ async function validateModelHeader(modelPath: string): Promise<{ ok: true } | { 
     clearTimeout(timeoutId);
 
     if (!response.ok) {
-      return { ok: false, reason: `HTTP ${response.status} while fetching model.` };
+      return {
+        ok: false,
+        fatal: false,
+        reason: `HTTP ${response.status} while fetching model header check.`,
+      };
     }
 
     const data = await response.arrayBuffer();
     const bytes = new Uint8Array(data);
 
     if (bytes.length < 4) {
-      return { ok: false, reason: "Model file is unexpectedly small." };
+      return { ok: false, fatal: true, reason: "Model file is unexpectedly small." };
     }
 
     const headerText = new TextDecoder().decode(bytes.subarray(0, Math.min(160, bytes.length))).trim();
@@ -158,6 +165,7 @@ async function validateModelHeader(modelPath: string): Promise<{ ok: true } | { 
     if (headerText.startsWith("version https://git-lfs.github.com/spec/v1")) {
       return {
         ok: false,
+        fatal: true,
         reason: "Deployed file looks like a Git LFS pointer, not a real .glb binary.",
       };
     }
@@ -171,6 +179,7 @@ async function validateModelHeader(modelPath: string): Promise<{ ok: true } | { 
     if (!isBinaryGlb) {
       return {
         ok: false,
+        fatal: true,
         reason: "File header is not glTF binary. Verify the uploaded file is a valid .glb.",
       };
     }
@@ -179,10 +188,11 @@ async function validateModelHeader(modelPath: string): Promise<{ ok: true } | { 
   } catch (error) {
     return {
       ok: false,
+      fatal: false,
       reason:
         error instanceof Error
-          ? `Unable to fetch model file: ${error.message}. Check that the URL is public and allows CORS from this site.`
-          : "Unable to fetch model file.",
+          ? `Model header check skipped: ${error.message}`
+          : "Model header check skipped.",
     };
   }
 }
@@ -453,8 +463,14 @@ function SceneContent({ timeline, buildings, progress, modelPath }: CampusSceneP
         return;
       }
 
-      setModelCheckStatus("invalid");
-      setModelErrorMessage(result.reason);
+      if (result.fatal) {
+        setModelCheckStatus("invalid");
+        setModelErrorMessage(result.reason);
+        return;
+      }
+
+      // Non-fatal checks (timeouts/network hiccups) should never block model loading.
+      console.warn(result.reason);
     });
 
     return () => {
