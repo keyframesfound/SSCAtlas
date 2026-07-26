@@ -9,7 +9,7 @@ export const LoadingPage = ({ visible, progress }: LoadingPageProps) => {
       <div className="loading-page-inner">
         <p className="loading-kicker">St. Stephen's College</p>
         <h1>SSC Atlas</h1>
-        <p className="loading-caption">Preparing cinematic campus experience</p>
+        <p className="loading-caption">Preparing campus experience</p>
 
         <div className="loading-meter" aria-hidden="true">
           <span style={{ transform: `scaleX(${Math.min(1, Math.max(0, progress / 100))})` }} />
