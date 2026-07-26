@@ -44,12 +44,14 @@ class ModelErrorBoundary extends Component<
   }
 }
 
-function ModelLoadingOverlay({ visible }: { visible: boolean }) {
+function ModelLoadingOverlay({ visible, message }: { visible: boolean; message: string }) {
   const { progress, active } = useProgress();
 
-  if (!visible || !active) {
+  if (!visible) {
     return null;
   }
+
+  const text = active ? `Loading model ${Math.round(progress)}%` : message;
 
   return (
     <Html fullscreen>
@@ -77,11 +79,98 @@ function ModelLoadingOverlay({ visible }: { visible: boolean }) {
             textAlign: "center",
           }}
         >
-          Loading model {Math.round(progress)}%
+          {text}
         </div>
       </div>
     </Html>
   );
+}
+
+function ModelErrorOverlay({ message }: { message: string | null }) {
+  if (!message) {
+    return null;
+  }
+
+  return (
+    <Html fullscreen>
+      <div
+        style={{
+          position: "absolute",
+          left: "50%",
+          bottom: 22,
+          transform: "translateX(-50%)",
+          maxWidth: "min(90vw, 680px)",
+          padding: "0.6rem 0.85rem",
+          borderRadius: 10,
+          background: "rgba(56, 20, 20, 0.86)",
+          border: "1px solid rgba(255, 170, 170, 0.48)",
+          color: "#ffd6d6",
+          fontSize: "0.82rem",
+          lineHeight: 1.35,
+          letterSpacing: "0.015em",
+          textAlign: "center",
+          pointerEvents: "none",
+        }}
+      >
+        {message}
+      </div>
+    </Html>
+  );
+}
+
+type ModelCheckStatus = "idle" | "checking" | "ready" | "invalid";
+
+async function validateModelHeader(modelPath: string): Promise<{ ok: true } | { ok: false; reason: string }> {
+  try {
+    const response = await fetch(modelPath, {
+      headers: {
+        Range: "bytes=0-255",
+      },
+    });
+
+    if (!response.ok) {
+      return { ok: false, reason: `HTTP ${response.status} while fetching model.` };
+    }
+
+    const data = await response.arrayBuffer();
+    const bytes = new Uint8Array(data);
+
+    if (bytes.length < 4) {
+      return { ok: false, reason: "Model file is unexpectedly small." };
+    }
+
+    const headerText = new TextDecoder().decode(bytes.subarray(0, Math.min(160, bytes.length))).trim();
+
+    if (headerText.startsWith("version https://git-lfs.github.com/spec/v1")) {
+      return {
+        ok: false,
+        reason: "Deployed file looks like a Git LFS pointer, not a real .glb binary.",
+      };
+    }
+
+    const isBinaryGlb =
+      bytes[0] === 0x67 && // g
+      bytes[1] === 0x6c && // l
+      bytes[2] === 0x54 && // T
+      bytes[3] === 0x46; // F
+
+    if (!isBinaryGlb) {
+      return {
+        ok: false,
+        reason: "File header is not glTF binary. Verify the uploaded file is a valid .glb.",
+      };
+    }
+
+    return { ok: true };
+  } catch (error) {
+    return {
+      ok: false,
+      reason:
+        error instanceof Error
+          ? `Unable to fetch model file: ${error.message}`
+          : "Unable to fetch model file.",
+    };
+  }
 }
 
 function DirectedCamera({ timeline, progress }: Pick<CampusSceneProps, "timeline" | "progress">) {
@@ -319,10 +408,43 @@ function SceneContent({ timeline, buildings, progress, modelPath }: CampusSceneP
   const campusOpacity = smoothStep(0.07, 0.18, progress);
   const hasModelPath = typeof modelPath === "string" && modelPath.length > 0;
   const [modelFailed, setModelFailed] = useState(false);
+  const [modelCheckStatus, setModelCheckStatus] = useState<ModelCheckStatus>("idle");
+  const [modelErrorMessage, setModelErrorMessage] = useState<string | null>(null);
 
   useEffect(() => {
     setModelFailed(false);
+    setModelErrorMessage(null);
+
+    if (!hasModelPath || !modelPath) {
+      setModelCheckStatus("idle");
+      return;
+    }
+
+    let isCancelled = false;
+
+    setModelCheckStatus("checking");
+    void validateModelHeader(modelPath).then((result) => {
+      if (isCancelled) {
+        return;
+      }
+
+      if (result.ok) {
+        setModelCheckStatus("ready");
+        return;
+      }
+
+      setModelCheckStatus("invalid");
+      setModelErrorMessage(result.reason);
+    });
+
+    return () => {
+      isCancelled = true;
+    };
   }, [modelPath]);
+
+  const shouldLoadModel = hasModelPath && modelCheckStatus === "ready" && !modelFailed;
+  const showLoadingOverlay = hasModelPath && !modelFailed && modelCheckStatus !== "invalid";
+  const loadingMessage = modelCheckStatus === "checking" ? "Verifying model file..." : "Preparing model...";
 
   return (
     <>
@@ -349,11 +471,18 @@ function SceneContent({ timeline, buildings, progress, modelPath }: CampusSceneP
           0.98 + campusOpacity * 0.02,
         ]}
       >
-        {hasModelPath && !modelFailed ? (
+        {shouldLoadModel ? (
           <ModelErrorBoundary
             key={modelPath}
             fallback={null}
-            onError={() => setModelFailed(true)}
+            onError={(error) => {
+              setModelFailed(true);
+              setModelErrorMessage(
+                error instanceof Error
+                  ? `Model parse failed: ${error.message}`
+                  : "Model parse failed. Falling back to procedural geometry.",
+              );
+            }}
           >
             <Suspense fallback={null}>
               <CampusModel modelPath={modelPath} opacity={campusOpacity} />
@@ -364,7 +493,8 @@ function SceneContent({ timeline, buildings, progress, modelPath }: CampusSceneP
         )}
       </group>
 
-      <ModelLoadingOverlay visible={hasModelPath && !modelFailed} />
+      <ModelLoadingOverlay visible={showLoadingOverlay} message={loadingMessage} />
+      <ModelErrorOverlay message={modelErrorMessage} />
       <BoundaryLine progress={progress} />
       <DirectedCamera timeline={timeline} progress={progress} />
     </>
