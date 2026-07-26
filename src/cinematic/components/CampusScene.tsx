@@ -118,7 +118,7 @@ function ModelErrorOverlay({ message }: { message: string | null }) {
   );
 }
 
-type ModelCheckStatus = "idle" | "checking" | "ready" | "invalid";
+type ModelCheckStatus = "idle" | "ready" | "invalid";
 
 function isCrossOriginModelPath(modelPath: string): boolean {
   try {
@@ -131,7 +131,16 @@ function isCrossOriginModelPath(modelPath: string): boolean {
 
 async function validateModelHeader(modelPath: string): Promise<{ ok: true } | { ok: false; reason: string }> {
   try {
-    const response = await fetch(modelPath);
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 8000);
+
+    const response = await fetch(modelPath, {
+      headers: {
+        Range: "bytes=0-255",
+      },
+      signal: controller.signal,
+    });
+    clearTimeout(timeoutId);
 
     if (!response.ok) {
       return { ok: false, reason: `HTTP ${response.status} while fetching model.` };
@@ -425,14 +434,15 @@ function SceneContent({ timeline, buildings, progress, modelPath }: CampusSceneP
       return;
     }
 
+    // Never block model loading on validation. Start loading immediately.
+    setModelCheckStatus("ready");
+
     let isCancelled = false;
 
     if (isCrossOriginModelPath(modelPath)) {
-      setModelCheckStatus("ready");
       return;
     }
 
-    setModelCheckStatus("checking");
     void validateModelHeader(modelPath).then((result) => {
       if (isCancelled) {
         return;
@@ -452,9 +462,9 @@ function SceneContent({ timeline, buildings, progress, modelPath }: CampusSceneP
     };
   }, [modelPath]);
 
-  const shouldLoadModel = hasModelPath && modelCheckStatus === "ready" && !modelFailed;
+  const shouldLoadModel = hasModelPath && modelCheckStatus !== "invalid" && !modelFailed;
   const showLoadingOverlay = hasModelPath && !modelFailed && modelCheckStatus !== "invalid";
-  const loadingMessage = modelCheckStatus === "checking" ? "Verifying model file..." : "Preparing model...";
+  const loadingMessage = "Preparing model...";
 
   return (
     <>
