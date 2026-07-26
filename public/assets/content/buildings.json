@@ -43,7 +43,7 @@
   },
   {
     "id": "ScienceCentre",
-    "name": "Science Centre",
+    "name": "Special Room Block",
     "chapter": "Innovation in Practice",
     "description": "Strong geometric volumes expressing experimentation, discovery, and future thinking.",
     "position": [35, 5, -16]
