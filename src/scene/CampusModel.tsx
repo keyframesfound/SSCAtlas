@@ -24,6 +24,16 @@ const ModelAsset = ({ modelUrl, onReady }: ModelAssetProps) => {
   return <primitive object={gltf.scene} />
 }
 
+const getFallbackAnchor = (index: number): [number, number, number] => {
+  const angle = (index / 17) * Math.PI * 2
+  const radius = 28 + (index % 5) * 9
+  return [Math.cos(angle) * radius, 3 + (index % 3), Math.sin(angle) * radius]
+}
+
+const getBuildingAnchor = (building: BuildingDefinition, index: number): [number, number, number] => {
+  return building.position ?? getFallbackAnchor(index)
+}
+
 const PlaceholderCampus = ({ buildings }: { buildings: BuildingDefinition[] }) => {
   return (
     <group name="SSC_Campus">
@@ -32,8 +42,8 @@ const PlaceholderCampus = ({ buildings }: { buildings: BuildingDefinition[] }) =
         <meshStandardMaterial color="#101418" roughness={0.95} metalness={0.05} />
       </mesh>
 
-      {buildings.map((building) => {
-        const [x, y, z] = building.position
+      {buildings.map((building, index) => {
+        const [x, y, z] = getBuildingAnchor(building, index)
 
         return (
           <group key={building.id} name={building.id} position={[x, y, z]}>
@@ -81,10 +91,11 @@ export const CampusModel = ({ stats, buildings, onModelReady }: CampusModelProps
     const root = new Group()
     root.name = stats.model.objectRoot
 
-    buildings.forEach((building) => {
+    buildings.forEach((building, index) => {
+      const anchor = getBuildingAnchor(building, index)
       const marker = new Group()
       marker.name = building.id
-      marker.position.set(...building.position)
+      marker.position.set(...anchor)
       root.add(marker)
     })
 
@@ -102,8 +113,8 @@ export const CampusModel = ({ stats, buildings, onModelReady }: CampusModelProps
       <primitive object={namedMarkers} visible={false} />
 
       {/* Force named anchors even with incomplete placeholder geometry. */}
-      {buildings.map((building) => {
-        const [x, y, z] = building.position
+      {buildings.map((building, index) => {
+        const [x, y, z] = getBuildingAnchor(building, index)
         return <group key={`anchor-${building.id}`} name={building.id} position={[x, y, z]} visible={false} />
       })}
     </group>
