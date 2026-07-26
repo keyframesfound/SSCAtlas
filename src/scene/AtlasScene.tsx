@@ -11,6 +11,7 @@ import { smoothstep } from '../lib/math'
 type AtlasSceneProps = {
   content: AtlasContent
   progress: number
+  onSceneReady: (ready: boolean) => void
 }
 
 const Atmosphere = ({ progress }: { progress: number }) => {
@@ -45,7 +46,7 @@ const Atmosphere = ({ progress }: { progress: number }) => {
   )
 }
 
-export const AtlasScene = ({ content, progress }: AtlasSceneProps) => {
+export const AtlasScene = ({ content, progress, onSceneReady }: AtlasSceneProps) => {
   const sparklesOpacity = 0.08 + smoothstep(0.2, 0.9, progress) * 0.12
 
   return (
@@ -62,7 +63,11 @@ export const AtlasScene = ({ content, progress }: AtlasSceneProps) => {
         <OpeningContours progress={progress} />
 
         <group>
-          <CampusModel stats={content.statistics} buildings={content.buildings} />
+          <CampusModel
+            stats={content.statistics}
+            buildings={content.buildings}
+            onModelReady={() => onSceneReady(true)}
+          />
           <CampusBoundary points={content.statistics.boundaryPoints} progress={progress} />
         </group>
 

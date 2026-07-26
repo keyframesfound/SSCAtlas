@@ -6,14 +6,21 @@ import type { BuildingDefinition, StatisticsContent } from '../types/content'
 type CampusModelProps = {
   stats: StatisticsContent
   buildings: BuildingDefinition[]
+  onModelReady: () => void
 }
 
 type ModelAssetProps = {
   modelUrl: string
+  onReady: () => void
 }
 
-const ModelAsset = ({ modelUrl }: ModelAssetProps) => {
+const ModelAsset = ({ modelUrl, onReady }: ModelAssetProps) => {
   const gltf = useGLTF(modelUrl)
+
+  useEffect(() => {
+    onReady()
+  }, [onReady])
+
   return <primitive object={gltf.scene} />
 }
 
@@ -41,8 +48,8 @@ const PlaceholderCampus = ({ buildings }: { buildings: BuildingDefinition[] }) =
   )
 }
 
-export const CampusModel = ({ stats, buildings }: CampusModelProps) => {
-  const [hasModel, setHasModel] = useState(false)
+export const CampusModel = ({ stats, buildings, onModelReady }: CampusModelProps) => {
+  const [modelState, setModelState] = useState<'checking' | 'available' | 'missing'>('checking')
 
   useEffect(() => {
     let active = true
@@ -50,12 +57,12 @@ export const CampusModel = ({ stats, buildings }: CampusModelProps) => {
     fetch(stats.model.url, { method: 'HEAD' })
       .then((response) => {
         if (active) {
-          setHasModel(response.ok)
+          setModelState(response.ok ? 'available' : 'missing')
         }
       })
       .catch(() => {
         if (active) {
-          setHasModel(false)
+          setModelState('missing')
         }
       })
 
@@ -63,6 +70,12 @@ export const CampusModel = ({ stats, buildings }: CampusModelProps) => {
       active = false
     }
   }, [stats.model.url])
+
+  useEffect(() => {
+    if (modelState === 'missing') {
+      onModelReady()
+    }
+  }, [modelState, onModelReady])
 
   const namedMarkers = useMemo(() => {
     const root = new Group()
@@ -80,7 +93,11 @@ export const CampusModel = ({ stats, buildings }: CampusModelProps) => {
 
   return (
     <group>
-      {hasModel ? <ModelAsset modelUrl={stats.model.url} /> : <PlaceholderCampus buildings={buildings} />}
+      {modelState === 'available' ? (
+        <ModelAsset modelUrl={stats.model.url} onReady={onModelReady} />
+      ) : modelState === 'missing' ? (
+        <PlaceholderCampus buildings={buildings} />
+      ) : null}
 
       <primitive object={namedMarkers} visible={false} />
 
