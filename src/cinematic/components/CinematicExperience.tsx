@@ -114,6 +114,7 @@ export function CinematicExperience() {
           timeline={content.timeline}
           buildings={content.buildings}
           progress={progress}
+          modelPath={activeScene.model}
         />
       </div>
 

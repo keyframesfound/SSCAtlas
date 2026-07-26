@@ -45,7 +45,7 @@
       "Soft foreground vegetation parallax"
     ],
     "image": "/assets/images/chapters/scene-03-main-entrance.svg",
-    "model": "/assets/models/buildings/main-entrance.glb",
+    "model": "/assets/models/campus.glb",
     "cadence": "medium",
     "progressStart": 0.17,
     "progressEnd": 0.25
@@ -62,7 +62,7 @@
       "Warm reflective highlights in glazing"
     ],
     "image": "/assets/images/chapters/scene-04-school-house.svg",
-    "model": "/assets/models/buildings/school-house.glb",
+    "model": "/assets/models/campus.glb",
     "cadence": "slow",
     "progressStart": 0.25,
     "progressEnd": 0.33
@@ -79,7 +79,7 @@
       "High-fidelity material response to sunlight"
     ],
     "image": "/assets/images/chapters/scene-05-chapel.svg",
-    "model": "/assets/models/buildings/chapel.glb",
+    "model": "/assets/models/campus.glb",
     "cadence": "static",
     "progressStart": 0.33,
     "progressEnd": 0.4
@@ -96,7 +96,7 @@
       "Distinct spatial rhythm between blocks"
     ],
     "image": "/assets/images/chapters/scene-06-academic-core.svg",
-    "model": "/assets/models/buildings/academic-core.glb",
+    "model": "/assets/models/campus.glb",
     "cadence": "medium",
     "progressStart": 0.4,
     "progressEnd": 0.48
@@ -113,7 +113,7 @@
       "Quiet pause to emphasize atmosphere"
     ],
     "image": "/assets/images/chapters/scene-07-library.svg",
-    "model": "/assets/models/buildings/library.glb",
+    "model": "/assets/models/campus.glb",
     "cadence": "slow",
     "progressStart": 0.48,
     "progressEnd": 0.56
@@ -130,7 +130,7 @@
       "Clear visual distinction from heritage zones"
     ],
     "image": "/assets/images/chapters/scene-08-science.svg",
-    "model": "/assets/models/buildings/science.glb",
+    "model": "/assets/models/campus.glb",
     "cadence": "medium",
     "progressStart": 0.56,
     "progressEnd": 0.64
@@ -147,7 +147,7 @@
       "Subtle environmental movement"
     ],
     "image": "/assets/images/chapters/scene-09-benevolence.svg",
-    "model": "/assets/models/buildings/benevolence.glb",
+    "model": "/assets/models/campus.glb",
     "cadence": "slow",
     "progressStart": 0.64,
     "progressEnd": 0.72
@@ -164,7 +164,7 @@
       "Smooth deceleration into broad overview"
     ],
     "image": "/assets/images/chapters/scene-10-sports.svg",
-    "model": "/assets/models/buildings/sports-complex.glb",
+    "model": "/assets/models/campus.glb",
     "cadence": "fast",
     "progressStart": 0.72,
     "progressEnd": 0.8
@@ -181,7 +181,7 @@
       "Quiet cadence to reset pacing"
     ],
     "image": "/assets/images/chapters/scene-11-boarding.svg",
-    "model": "/assets/models/buildings/boarding.glb",
+    "model": "/assets/models/campus.glb",
     "cadence": "slow",
     "progressStart": 0.8,
     "progressEnd": 0.89

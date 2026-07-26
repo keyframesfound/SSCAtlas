@@ -1,6 +1,6 @@
-import { Line, PerspectiveCamera, Stars } from "@react-three/drei";
+import { Html, Line, PerspectiveCamera, Stars, useGLTF, useProgress } from "@react-three/drei";
 import { Canvas, useFrame } from "@react-three/fiber";
-import { useMemo, useRef } from "react";
+import { Component, Suspense, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import * as THREE from "three";
 import type { BuildingPoint, CinematicTimeline } from "../types";
 import { sampleKeyframes, smoothStep } from "../utils/interpolate";
@@ -9,6 +9,7 @@ interface CampusSceneProps {
   timeline: CinematicTimeline;
   buildings: BuildingPoint[];
   progress: number;
+  modelPath?: string;
 }
 
 const MATERIAL_COLORS: Record<BuildingPoint["material"], string> = {
@@ -18,6 +19,70 @@ const MATERIAL_COLORS: Record<BuildingPoint["material"], string> = {
   glass: "#8fb4c8",
   wood: "#806347",
 };
+
+class ModelErrorBoundary extends Component<
+  { fallback: ReactNode; children: ReactNode; onError?: (error: unknown) => void },
+  { hasError: boolean }
+> {
+  state = { hasError: false };
+
+  static getDerivedStateFromError() {
+    return { hasError: true };
+  }
+
+  componentDidCatch(error: unknown) {
+    console.error("Model load failed. Falling back to procedural geometry.", error);
+    this.props.onError?.(error);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return this.props.fallback;
+    }
+
+    return this.props.children;
+  }
+}
+
+function ModelLoadingOverlay({ visible }: { visible: boolean }) {
+  const { progress, active } = useProgress();
+
+  if (!visible || !active) {
+    return null;
+  }
+
+  return (
+    <Html fullscreen>
+      <div
+        style={{
+          position: "absolute",
+          inset: 0,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          pointerEvents: "none",
+        }}
+      >
+        <div
+          style={{
+            minWidth: 190,
+            padding: "0.65rem 0.9rem",
+            borderRadius: 10,
+            background: "rgba(12, 14, 18, 0.66)",
+            border: "1px solid rgba(255, 217, 166, 0.35)",
+            color: "#ffe5bf",
+            fontSize: "0.92rem",
+            fontWeight: 600,
+            letterSpacing: "0.04em",
+            textAlign: "center",
+          }}
+        >
+          Loading model {Math.round(progress)}%
+        </div>
+      </div>
+    </Html>
+  );
+}
 
 function DirectedCamera({ timeline, progress }: Pick<CampusSceneProps, "timeline" | "progress">) {
   const cameraRef = useRef<THREE.PerspectiveCamera>(null);
@@ -122,17 +187,32 @@ function BoundaryLine({ progress }: { progress: number }) {
   );
 }
 
-function CampusGeometry({ buildings }: Pick<CampusSceneProps, "buildings">) {
+function CampusGeometry({
+  buildings,
+  opacity,
+}: Pick<CampusSceneProps, "buildings"> & { opacity: number }) {
   return (
     <group>
       <mesh receiveShadow rotation-x={-Math.PI / 2} position={[0, -0.1, 0]}>
         <planeGeometry args={[560, 560, 32, 32]} />
-        <meshStandardMaterial color="#6f7f64" roughness={0.95} metalness={0.02} />
+        <meshStandardMaterial
+          color="#6f7f64"
+          roughness={0.95}
+          metalness={0.02}
+          transparent
+          opacity={opacity}
+        />
       </mesh>
 
       <mesh rotation-x={-Math.PI / 2} position={[0, -0.35, 0]}>
         <circleGeometry args={[900, 48]} />
-        <meshStandardMaterial color="#7896aa" roughness={0.9} metalness={0.15} />
+        <meshStandardMaterial
+          color="#7896aa"
+          roughness={0.9}
+          metalness={0.15}
+          transparent
+          opacity={opacity}
+        />
       </mesh>
 
       {buildings.map((building) => (
@@ -147,8 +227,8 @@ function CampusGeometry({ buildings }: Pick<CampusSceneProps, "buildings">) {
             color={MATERIAL_COLORS[building.material]}
             roughness={building.material === "glass" ? 0.2 : 0.8}
             metalness={building.material === "glass" ? 0.4 : 0.05}
-            transparent={building.material === "glass"}
-            opacity={building.material === "glass" ? 0.85 : 1}
+            transparent
+            opacity={(building.material === "glass" ? 0.85 : 1) * opacity}
           />
         </mesh>
       ))}
@@ -158,8 +238,91 @@ function CampusGeometry({ buildings }: Pick<CampusSceneProps, "buildings">) {
   );
 }
 
-function SceneContent({ timeline, buildings, progress }: CampusSceneProps) {
+function CampusModel({ modelPath, opacity }: { modelPath: string; opacity: number }) {
+  const gltf = useGLTF(modelPath);
+
+  const { normalizedScene, scaleFactor } = useMemo(() => {
+    const clonedScene = gltf.scene.clone(true);
+
+    clonedScene.traverse((child) => {
+      if (!(child instanceof THREE.Mesh)) {
+        return;
+      }
+
+      child.castShadow = true;
+      child.receiveShadow = true;
+
+      const materials = Array.isArray(child.material) ? child.material : [child.material];
+      materials.forEach((material) => {
+        const withOpacity = material as THREE.Material & {
+          opacity?: number;
+          transparent?: boolean;
+          userData: Record<string, unknown>;
+        };
+        if (typeof withOpacity.userData.baseOpacity !== "number") {
+          withOpacity.userData.baseOpacity =
+            typeof withOpacity.opacity === "number" ? withOpacity.opacity : 1;
+        }
+      });
+    });
+
+    const bounds = new THREE.Box3().setFromObject(clonedScene);
+    const center = new THREE.Vector3();
+    const size = new THREE.Vector3();
+    bounds.getCenter(center);
+    bounds.getSize(size);
+
+    const targetFootprint = 320;
+    const maxFootprint = Math.max(size.x, size.z, 1);
+    const computedScale = targetFootprint / maxFootprint;
+
+    clonedScene.position.set(-center.x, -bounds.min.y, -center.z);
+
+    return {
+      normalizedScene: clonedScene,
+      scaleFactor: computedScale,
+    };
+  }, [gltf.scene]);
+
+  useEffect(() => {
+    normalizedScene.traverse((child) => {
+      if (!(child instanceof THREE.Mesh)) {
+        return;
+      }
+
+      const materials = Array.isArray(child.material) ? child.material : [child.material];
+      materials.forEach((material) => {
+        const withOpacity = material as THREE.Material & {
+          opacity?: number;
+          transparent?: boolean;
+          userData: Record<string, unknown>;
+        };
+        const baseOpacity =
+          typeof withOpacity.userData.baseOpacity === "number"
+            ? withOpacity.userData.baseOpacity
+            : 1;
+        withOpacity.opacity = baseOpacity * opacity;
+        withOpacity.transparent = withOpacity.opacity < 1;
+      });
+    });
+  }, [normalizedScene, opacity]);
+
+  return (
+    <group scale={[scaleFactor, scaleFactor, scaleFactor]}>
+      <primitive object={normalizedScene} />
+    </group>
+  );
+}
+
+function SceneContent({ timeline, buildings, progress, modelPath }: CampusSceneProps) {
   const hazeColor = new THREE.Color("#f2d8af");
+  const campusOpacity = smoothStep(0.07, 0.18, progress);
+  const hasModelPath = typeof modelPath === "string" && modelPath.length > 0;
+  const [modelFailed, setModelFailed] = useState(false);
+
+  useEffect(() => {
+    setModelFailed(false);
+  }, [modelPath]);
 
   return (
     <>
@@ -178,21 +341,49 @@ function SceneContent({ timeline, buildings, progress }: CampusSceneProps) {
 
       <Stars radius={800} depth={80} count={900} factor={1.8} saturation={0} fade speed={0.1} />
 
-      <CampusGeometry buildings={buildings} />
+      <group
+        position={[0, (1 - campusOpacity) * 6, 0]}
+        scale={[
+          0.98 + campusOpacity * 0.02,
+          0.95 + campusOpacity * 0.05,
+          0.98 + campusOpacity * 0.02,
+        ]}
+      >
+        {hasModelPath && !modelFailed ? (
+          <ModelErrorBoundary
+            key={modelPath}
+            fallback={null}
+            onError={() => setModelFailed(true)}
+          >
+            <Suspense fallback={null}>
+              <CampusModel modelPath={modelPath} opacity={campusOpacity} />
+            </Suspense>
+          </ModelErrorBoundary>
+        ) : (
+          <CampusGeometry buildings={buildings} opacity={campusOpacity} />
+        )}
+      </group>
+
+      <ModelLoadingOverlay visible={hasModelPath && !modelFailed} />
       <BoundaryLine progress={progress} />
       <DirectedCamera timeline={timeline} progress={progress} />
     </>
   );
 }
 
-export function CampusScene({ timeline, buildings, progress }: CampusSceneProps) {
+export function CampusScene({ timeline, buildings, progress, modelPath }: CampusSceneProps) {
   return (
     <Canvas
       shadows
       gl={{ antialias: true, alpha: false, powerPreference: "high-performance" }}
       dpr={[1, 1.75]}
     >
-      <SceneContent timeline={timeline} buildings={buildings} progress={progress} />
+      <SceneContent
+        timeline={timeline}
+        buildings={buildings}
+        progress={progress}
+        modelPath={modelPath}
+      />
     </Canvas>
   );
 }
