@@ -6,6 +6,21 @@ import { CampusScene } from "./CampusScene";
 import { ChapterOverlay } from "./ChapterOverlay";
 import { LoadingScreen } from "./LoadingScreen";
 
+const CAMPUS_MODEL_PATH = "/assets/models/campus.glb";
+
+function resolveModelPath(path: string): string {
+  if (path !== CAMPUS_MODEL_PATH) {
+    return path;
+  }
+
+  const externalCampusModelUrl = import.meta.env.VITE_CAMPUS_MODEL_URL;
+  if (typeof externalCampusModelUrl === "string" && externalCampusModelUrl.length > 0) {
+    return externalCampusModelUrl;
+  }
+
+  return path;
+}
+
 async function loadCinematicContent(): Promise<CinematicContent> {
   const [scenes, buildings, timeline, statistics] = await Promise.all([
     fetch("/assets/content/scenes.json").then((response) => response.json()),
@@ -106,6 +121,7 @@ export function CinematicExperience() {
     0,
     content.scenes.findIndex((scene) => scene.id === activeScene.id),
   );
+  const activeModelPath = resolveModelPath(activeScene.model);
 
   return (
     <div className="cinematic-root">
@@ -114,7 +130,7 @@ export function CinematicExperience() {
           timeline={content.timeline}
           buildings={content.buildings}
           progress={progress}
-          modelPath={activeScene.model}
+          modelPath={activeModelPath}
         />
       </div>
 
