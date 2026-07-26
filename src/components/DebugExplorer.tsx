@@ -1,4 +1,4 @@
-import { Suspense, useEffect, useMemo, useState } from 'react'
+import { Suspense, useEffect, useMemo, useRef, useState } from 'react'
 import { Canvas, useFrame, useThree } from '@react-three/fiber'
 import { Environment, FlyControls, Grid, OrbitControls, Sky, Sparkles } from '@react-three/drei'
 import { PerspectiveCamera, Vector3 } from 'three'
@@ -21,16 +21,22 @@ const lookTarget = new Vector3()
 
 type DebugCameraProbeProps = {
   focusDistance: number
+  controlMode: 'fly' | 'orbit'
+  turnDirection: number
   onSnapshot: (snapshot: CameraSnapshot) => void
 }
 
-const DebugCameraProbe = ({ focusDistance, onSnapshot }: DebugCameraProbeProps) => {
+const DebugCameraProbe = ({ focusDistance, controlMode, turnDirection, onSnapshot }: DebugCameraProbeProps) => {
   const { camera } = useThree()
 
-  useFrame(() => {
+  useFrame((_, delta) => {
     if (camera instanceof PerspectiveCamera) {
       camera.fov = 40
       camera.updateProjectionMatrix()
+    }
+
+    if (controlMode === 'fly' && turnDirection !== 0) {
+      camera.rotateY(turnDirection * delta * 1.5)
     }
 
     camera.getWorldDirection(lookDirection)
@@ -80,6 +86,8 @@ const formatVector = (vector: [number, number, number]) => {
 export const DebugExplorer = ({ content, onSceneReady }: DebugExplorerProps) => {
   const [focusDistance, setFocusDistance] = useState(100)
   const [controlMode, setControlMode] = useState<'fly' | 'orbit'>('fly')
+  const [turnDirection, setTurnDirection] = useState(0)
+  const turnState = useRef({ left: false, right: false })
   const [snapshot, setSnapshot] = useState<CameraSnapshot>({
     position: [0, 120, 220],
     lookAt: [0, 0, 0],
@@ -91,14 +99,54 @@ export const DebugExplorer = ({ content, onSceneReady }: DebugExplorerProps) => 
   }, [snapshot])
 
   useEffect(() => {
+    const syncTurnDirection = () => {
+      const nextDirection = turnState.current.left === turnState.current.right
+        ? 0
+        : turnState.current.left
+          ? 1
+          : -1
+
+      setTurnDirection(nextDirection)
+    }
+
     const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key.toLowerCase() === 'm') {
+      const key = event.key.toLowerCase()
+
+      if (key === 'm') {
         setControlMode((mode) => (mode === 'fly' ? 'orbit' : 'fly'))
+      }
+
+      if (key === 'q') {
+        turnState.current.left = true
+        syncTurnDirection()
+      }
+
+      if (key === 'e') {
+        turnState.current.right = true
+        syncTurnDirection()
+      }
+    }
+
+    const onKeyUp = (event: KeyboardEvent) => {
+      const key = event.key.toLowerCase()
+
+      if (key === 'q') {
+        turnState.current.left = false
+        syncTurnDirection()
+      }
+
+      if (key === 'e') {
+        turnState.current.right = false
+        syncTurnDirection()
       }
     }
 
     window.addEventListener('keydown', onKeyDown)
-    return () => window.removeEventListener('keydown', onKeyDown)
+    window.addEventListener('keyup', onKeyUp)
+    return () => {
+      window.removeEventListener('keydown', onKeyDown)
+      window.removeEventListener('keyup', onKeyUp)
+    }
   }, [])
 
   return (
@@ -112,7 +160,12 @@ export const DebugExplorer = ({ content, onSceneReady }: DebugExplorerProps) => 
         >
           <Suspense fallback={null}>
             <DebugEnvironment />
-            <DebugCameraProbe focusDistance={focusDistance} onSnapshot={setSnapshot} />
+            <DebugCameraProbe
+              focusDistance={focusDistance}
+              controlMode={controlMode}
+              turnDirection={turnDirection}
+              onSnapshot={setSnapshot}
+            />
             <CampusModel
               stats={content.statistics}
               buildings={content.buildings}
@@ -129,7 +182,7 @@ export const DebugExplorer = ({ content, onSceneReady }: DebugExplorerProps) => 
               fadeStrength={1.5}
             />
             {controlMode === 'fly' ? (
-              <FlyControls movementSpeed={80} rollSpeed={0.35} dragToLook autoForward={false} />
+              <FlyControls movementSpeed={80} rollSpeed={0} dragToLook autoForward={false} />
             ) : (
               <OrbitControls makeDefault enablePan enableZoom enableRotate />
             )}
@@ -141,7 +194,7 @@ export const DebugExplorer = ({ content, onSceneReady }: DebugExplorerProps) => 
         <p className="debug-kicker">SSC Atlas Debug Explorer</p>
         <h1>Camera Inspector</h1>
         <p className="debug-copy">
-          Fly: click and drag to look, move with WASD/R/F. Press M to switch mode. FOV is locked to 40.
+          Fly: click and drag to look, move with WASD/R/F, turn with Q/E. Press M to switch mode. FOV is locked to 40.
         </p>
 
         <div className="debug-controls">
