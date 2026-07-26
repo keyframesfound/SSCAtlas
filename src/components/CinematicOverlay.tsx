@@ -81,12 +81,6 @@ export const CinematicOverlay = ({ content, progress, loading }: CinematicOverla
         </div>
       </aside>
 
-      <section className={`overlay-reveal ${chapter.kind === 'reveal' ? 'visible' : ''}`}>
-        <h2>{content.statistics.campusAcreage}</h2>
-        <h3>{content.statistics.tagline}</h3>
-        <p>{content.statistics.subline}</p>
-      </section>
-
       <section className={`overlay-finale ${finalVisible ? 'visible' : ''}`}>
         <p className="crest-mark">SSC</p>
         <h2>{content.statistics.finalTitle}</h2>
