@@ -28,6 +28,7 @@ export type TimelineChapter = {
   title: string
   description: string
   cameraPathId: string
+  focusBuildingIds?: string[]
 }
 
 export type TimelineContent = {
@@ -49,9 +50,18 @@ export type StatisticsContent = {
   }
 }
 
+export type HeritageProfile = {
+  id: string
+  name: string
+  year: string
+  grade: string
+  narrative: string
+}
+
 export type AtlasContent = {
   buildings: BuildingDefinition[]
   cameraPaths: CameraPathMap
   timeline: TimelineContent
   statistics: StatisticsContent
+  heritageProfiles: HeritageProfile[]
 }
