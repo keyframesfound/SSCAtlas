@@ -3,12 +3,15 @@ import { useProgress } from '@react-three/drei'
 import { useAtlasContent } from './hooks/use-atlas-content'
 import { useLenisScroll } from './hooks/use-lenis-scroll'
 import { CinematicOverlay } from './components/CinematicOverlay'
+import { DebugExplorer } from './components/DebugExplorer'
 import { LoadingPage } from './components/LoadingPage'
+import { isDebugMode } from './lib/debug'
 import { AtlasScene } from './scene/AtlasScene'
 
 const SCROLL_HEIGHT_VH = 1400
 
 function App() {
+  const debugMode = isDebugMode()
   const progress = useLenisScroll()
   const { data, loading, error } = useAtlasContent()
   const { progress: assetProgress } = useProgress()
@@ -27,14 +30,18 @@ function App() {
   return (
     <main className="atlas-shell">
       {data ? (
-        <>
-          <div className="atlas-stage">
-            <AtlasScene content={data} progress={progress} onSceneReady={setSceneReady} />
-            <CinematicOverlay content={data} progress={progress} loading={showLoadingPage} />
-          </div>
+        debugMode ? (
+          <DebugExplorer content={data} onSceneReady={setSceneReady} />
+        ) : (
+          <>
+            <div className="atlas-stage">
+              <AtlasScene content={data} progress={progress} onSceneReady={setSceneReady} />
+              <CinematicOverlay content={data} progress={progress} loading={showLoadingPage} />
+            </div>
 
-          <div className="scroll-track" style={{ height: `${SCROLL_HEIGHT_VH}vh` }} aria-hidden="true" />
-        </>
+            <div className="scroll-track" style={{ height: `${SCROLL_HEIGHT_VH}vh` }} aria-hidden="true" />
+          </>
+        )
       ) : (
         <div className="loading-shell" />
       )}
