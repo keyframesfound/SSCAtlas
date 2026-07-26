@@ -1,0 +1,90 @@
+[
+  {
+    "id": "main-entrance",
+    "chapterId": "main-entrance",
+    "name": "Main Entrance",
+    "position": [-85, 10, -40],
+    "size": [28, 20, 18],
+    "material": "stone"
+  },
+  {
+    "id": "school-house",
+    "chapterId": "school-house",
+    "name": "School House",
+    "position": [-38, 14, 12],
+    "size": [38, 28, 24],
+    "material": "brick"
+  },
+  {
+    "id": "chapel",
+    "chapterId": "chapel",
+    "name": "Chapel",
+    "position": [10, 15, -18],
+    "size": [24, 30, 19],
+    "material": "stone"
+  },
+  {
+    "id": "academic-core-a",
+    "chapterId": "academic-core",
+    "name": "Academic Building A",
+    "position": [54, 16, 28],
+    "size": [42, 32, 24],
+    "material": "concrete"
+  },
+  {
+    "id": "academic-core-b",
+    "chapterId": "academic-core",
+    "name": "Academic Building B",
+    "position": [92, 14, -8],
+    "size": [30, 28, 22],
+    "material": "concrete"
+  },
+  {
+    "id": "library",
+    "chapterId": "library",
+    "name": "Library",
+    "position": [25, 12, 60],
+    "size": [30, 24, 22],
+    "material": "glass"
+  },
+  {
+    "id": "science",
+    "chapterId": "science-facilities",
+    "name": "Science Block",
+    "position": [118, 20, 56],
+    "size": [36, 40, 24],
+    "material": "glass"
+  },
+  {
+    "id": "benevolence-house",
+    "chapterId": "benevolence-student-life",
+    "name": "Benevolence House",
+    "position": [-28, 11, 82],
+    "size": [30, 22, 24],
+    "material": "wood"
+  },
+  {
+    "id": "student-life",
+    "chapterId": "benevolence-student-life",
+    "name": "Student Life Hub",
+    "position": [14, 9, 102],
+    "size": [28, 18, 24],
+    "material": "brick"
+  },
+  {
+    "id": "sports-complex",
+    "chapterId": "sports-complex",
+    "name": "Sports Complex",
+    "position": [150, 8, -56],
+    "size": [50, 16, 68],
+    "material": "concrete"
+  },
+  {
+    "id": "boarding",
+    "chapterId": "boarding",
+    "name": "Boarding Facilities",
+    "position": [-122, 10, 64],
+    "size": [36, 20, 34],
+    "material": "stone"
+  }
+]
