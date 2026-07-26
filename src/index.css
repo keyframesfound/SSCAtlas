@@ -39,6 +39,105 @@ body {
   width: 100%;
 }
 
+.debug-shell {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 24rem;
+  background: #050608;
+}
+
+.debug-stage {
+  position: relative;
+  min-height: 100vh;
+}
+
+.debug-hud {
+  position: relative;
+  z-index: 5;
+  padding: 1.4rem;
+  border-left: 1px solid rgba(244, 245, 247, 0.1);
+  background: linear-gradient(180deg, rgba(8, 10, 14, 0.96), rgba(5, 6, 8, 0.98));
+}
+
+.debug-kicker {
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  font-size: 0.65rem;
+  color: var(--muted-white);
+}
+
+.debug-hud h1 {
+  margin: 0.7rem 0 0;
+  font-size: 2rem;
+  line-height: 1;
+}
+
+.debug-copy {
+  margin: 0.85rem 0 0;
+  line-height: 1.55;
+  color: var(--subtle-white);
+  font-size: 0.9rem;
+}
+
+.debug-controls {
+  margin-top: 1.2rem;
+  display: grid;
+  gap: 0.55rem;
+}
+
+.debug-controls label,
+.debug-readout p {
+  font-size: 0.82rem;
+  color: var(--muted-white);
+}
+
+.debug-controls input {
+  width: 100%;
+}
+
+.debug-controls span {
+  font-size: 0.8rem;
+  color: var(--soft-white);
+}
+
+.debug-readout {
+  margin-top: 1.2rem;
+  display: grid;
+  gap: 0.45rem;
+}
+
+.debug-readout p {
+  margin: 0;
+  line-height: 1.45;
+}
+
+.debug-snippet {
+  margin-top: 1.2rem;
+  width: 100%;
+  min-height: 7rem;
+  padding: 0.9rem;
+  resize: vertical;
+  border: 1px solid rgba(244, 245, 247, 0.14);
+  border-radius: 0.8rem;
+  background: rgba(12, 16, 22, 0.92);
+  color: var(--soft-white);
+  font: 0.78rem/1.5 ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+.debug-button {
+  margin-top: 0.9rem;
+  border: 1px solid rgba(244, 245, 247, 0.18);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--soft-white);
+  padding: 0.75rem 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 0.68rem;
+  cursor: pointer;
+}
+
 .atlas-stage {
   position: fixed;
   inset: 0;
@@ -469,6 +568,19 @@ body {
 }
 
 @media (max-width: 720px) {
+  .debug-shell {
+    grid-template-columns: 1fr;
+  }
+
+  .debug-stage {
+    min-height: 60vh;
+  }
+
+  .debug-hud {
+    border-left: 0;
+    border-top: 1px solid rgba(244, 245, 247, 0.1);
+  }
+
   .overlay-chapter {
     width: calc(100vw - 1.5rem);
     left: 0.75rem;
