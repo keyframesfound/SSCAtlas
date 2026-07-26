@@ -3,119 +3,102 @@
     "id": "MainEntrance",
     "name": "Main Entrance",
     "chapter": "A Timeless Arrival",
-    "description": "A ceremonial threshold that frames the college's identity against woodland and sea.",
-    "position": [-18, 2, 42]
+    "description": "A ceremonial threshold that frames the college's identity against woodland and sea."
   },
   {
     "id": "SchoolHouse",
     "name": "School House",
     "chapter": "The Heart of the College",
-    "description": "The architectural centrepiece where heritage masonry meets contemporary learning life.",
-    "position": [-5, 4, 25]
+    "description": "The architectural centrepiece where heritage masonry meets contemporary learning life."
   },
   {
     "id": "MartinHostel",
     "name": "Martin Hostel",
     "chapter": "A Tradition of Boarding",
-    "description": "Warmly lit facades and courtyards that define the college's boarding tradition.",
-    "position": [24, 3, 18]
+    "description": "Warmly lit facades and courtyards that define the college's boarding tradition."
   },
   {
     "id": "Chapel",
     "name": "Chapel",
     "chapter": "A Place of Reflection",
-    "description": "A symmetrical sanctuary where light, proportion, and stillness guide the experience.",
-    "position": [12, 4, -2]
+    "description": "A symmetrical sanctuary where light, proportion, and stillness guide the experience."
   },
   {
     "id": "ClassroomBlock",
     "name": "Classroom Block",
     "chapter": "The Academic Core",
-    "description": "Modern teaching spaces threaded through tree-lined circulation and terraces.",
-    "position": [-8, 4, -20]
+    "description": "Modern teaching spaces threaded through tree-lined circulation and terraces."
   },
   {
     "id": "Library",
     "name": "Library",
     "chapter": "A Space for Curiosity",
-    "description": "A quiet civic room of knowledge, openness, and daylight.",
-    "position": [18, 3, -24]
+    "description": "A quiet civic room of knowledge, openness, and daylight."
   },
   {
     "id": "ScienceCentre",
     "name": "Special Room Block",
     "chapter": "Innovation in Practice",
-    "description": "Strong geometric volumes expressing experimentation, discovery, and future thinking.",
-    "position": [35, 5, -16]
+    "description": "Strong geometric volumes expressing experimentation, discovery, and future thinking."
   },
   {
     "id": "NgWahHall",
     "name": "Ng Wah Hall",
     "chapter": "Gathering at Scale",
-    "description": "A large assembly volume designed for milestone moments and collective celebration.",
-    "position": [40, 4, 6]
+    "description": "A large assembly volume designed for milestone moments and collective celebration."
   },
   {
     "id": "TangShiuKinHall",
     "name": "Tang Shiu Kin Hall",
     "chapter": "Performance and Community",
-    "description": "An events venue where student culture and performance life converge.",
-    "position": [28, 3, 28]
+    "description": "An events venue where student culture and performance life converge."
   },
   {
     "id": "BenevolenceHouse",
     "name": "Benevolence House",
     "chapter": "Community in Action",
-    "description": "A warm, human-scaled setting centered on wellbeing and connection.",
-    "position": [-182.169, -290.533, 75.4296]
+    "description": "A warm, human-scaled setting centered on wellbeing and connection."
   },
   {
     "id": "LeungKauKuiStudentCentre",
     "name": "Leung Kau Kui Student Centre",
     "chapter": "Student Life",
-    "description": "An active social anchor shaped by leadership, friendship, and campus rhythm.",
-    "position": [-24, 3, 16]
+    "description": "An active social anchor shaped by leadership, friendship, and campus rhythm."
   },
   {
     "id": "NorthHouse",
     "name": "North House",
     "chapter": "Living on Campus",
-    "description": "One half of a paired residential chapter rooted in belonging and tradition.",
-    "position": [-30, 4, -2]
+    "description": "One half of a paired residential chapter rooted in belonging and tradition."
   },
   {
     "id": "CollegeHouse",
     "name": "College House",
     "chapter": "Living on Campus",
-    "description": "A companion residential volume that completes the boarding community.",
-    "position": [-24, 4, -14]
+    "description": "A companion residential volume that completes the boarding community."
   },
   {
     "id": "HeritageGallery",
     "name": "Heritage Gallery",
     "chapter": "Where Heritage Lives",
-    "description": "A preserved narrative in crafted materials, details, and memory.",
-    "position": [-4, 3, -34]
+    "description": "A preserved narrative in crafted materials, details, and memory."
   },
   {
     "id": "CentralSquare",
     "name": "Central Square",
     "chapter": "The Campus Green",
-    "description": "A connective civic heart for daily encounters and shared momentum.",
-    "position": [12, 2, -40]
+    "description": "A connective civic heart for daily encounters and shared momentum."
   },
   {
     "id": "BellPlaza",
     "name": "Bell Plaza",
     "chapter": "The Campus Green",
-    "description": "An iconic open node linking pathways, facades, and campus life.",
-    "position": [28, 2, -36]
+    "description": "An iconic open node linking pathways, facades, and campus life."
   },
   {
     "id": "BigField",
     "name": "Big Field",
     "chapter": "Space to Compete",
-    "description": "A vast athletic landscape framed by architecture, woodland, and coastline.",
-    "position": [42, 1, -52]
+    "description": "A vast athletic landscape framed by architecture, woodland, and coastline."
   }
 ]
