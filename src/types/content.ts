@@ -5,7 +5,7 @@ export type BuildingDefinition = {
   name: string
   chapter: string
   description: string
-  position: Vec3Tuple
+  position?: Vec3Tuple
 }
 
 export type CameraKeyframe = {
