@@ -11,12 +11,12 @@ const FORWARDED_HEADERS = [
 ];
 
 export default async function handler(req, res) {
-  const upstreamUrl = process.env.CAMPUS_MODEL_UPSTREAM_URL;
+  const upstreamUrl = process.env.CAMPUS_MODEL_UPSTREAM_URL || process.env.VITE_CAMPUS_MODEL_URL;
 
   if (!upstreamUrl) {
     res.statusCode = 500;
     res.setHeader("content-type", "application/json");
-    res.end(JSON.stringify({ error: "Missing CAMPUS_MODEL_UPSTREAM_URL" }));
+    res.end(JSON.stringify({ error: "Missing CAMPUS_MODEL_UPSTREAM_URL (or VITE_CAMPUS_MODEL_URL)" }));
     return;
   }
 
