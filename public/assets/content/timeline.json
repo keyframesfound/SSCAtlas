@@ -92,7 +92,7 @@
       "start": 0.44,
       "end": 0.49,
       "headline": "Innovation in Practice",
-      "title": "Science Centre",
+      "title": "Special Room Block",
       "description": "Confident linear motion emphasizes geometric precision and future focus.",
       "cameraPathId": "scienceCentre",
       "focusBuildingIds": ["SpecialRoomBlock", "OldLaboratory"]
