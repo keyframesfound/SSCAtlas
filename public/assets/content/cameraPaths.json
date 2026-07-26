@@ -1,0 +1,79 @@
+{
+  "openingDescent": [
+    { "t": 0, "position": [0, 340, 580], "lookAt": [0, 0, 0], "fov": 34 },
+    { "t": 0.5, "position": [20, 260, 380], "lookAt": [6, 0, 2], "fov": 34 },
+    { "t": 1, "position": [26, 190, 250], "lookAt": [8, 0, 0], "fov": 36 }
+  ],
+  "boundaryReveal": [
+    { "t": 0, "position": [26, 150, 200], "lookAt": [2, 0, -4], "fov": 37 },
+    { "t": 1, "position": [20, 90, 150], "lookAt": [0, 0, -6], "fov": 39 }
+  ],
+  "mainEntrance": [
+    { "t": 0, "position": [-42, 30, 78], "lookAt": [-18, 3, 42], "fov": 44 },
+    { "t": 1, "position": [-28, 17, 58], "lookAt": [-18, 4, 42], "fov": 42 }
+  ],
+  "schoolHouse": [
+    { "t": 0, "position": [-22, 16, 40], "lookAt": [-5, 4, 25], "fov": 40 },
+    { "t": 0.5, "position": [-2, 14, 46], "lookAt": [-5, 5, 25], "fov": 39 },
+    { "t": 1, "position": [14, 20, 34], "lookAt": [-5, 4, 25], "fov": 40 }
+  ],
+  "martinHostel": [
+    { "t": 0, "position": [8, 10, 38], "lookAt": [24, 3, 18], "fov": 41 },
+    { "t": 1, "position": [34, 11, 30], "lookAt": [24, 4, 18], "fov": 41 }
+  ],
+  "chapel": [
+    { "t": 0, "position": [0, 8, 8], "lookAt": [12, 4, -2], "fov": 37 },
+    { "t": 1, "position": [24, 8, 8], "lookAt": [12, 4, -2], "fov": 37 }
+  ],
+  "classroomBlock": [
+    { "t": 0, "position": [-28, 7, -6], "lookAt": [-8, 4, -20], "fov": 40 },
+    { "t": 1, "position": [-8, 15, 10], "lookAt": [-8, 4, -20], "fov": 39 }
+  ],
+  "library": [
+    { "t": 0, "position": [2, 7, -16], "lookAt": [18, 3, -24], "fov": 38 },
+    { "t": 0.5, "position": [22, 8, -10], "lookAt": [18, 3, -24], "fov": 38 },
+    { "t": 1, "position": [34, 8, -24], "lookAt": [18, 3, -24], "fov": 38 }
+  ],
+  "scienceCentre": [
+    { "t": 0, "position": [14, 8, -6], "lookAt": [35, 5, -16], "fov": 39 },
+    { "t": 1, "position": [40, 9, -2], "lookAt": [35, 5, -16], "fov": 39 }
+  ],
+  "ngWahHall": [
+    { "t": 0, "position": [26, 12, 26], "lookAt": [40, 4, 6], "fov": 43 },
+    { "t": 1, "position": [48, 9, 14], "lookAt": [40, 4, 6], "fov": 42 }
+  ],
+  "tangShiuKinHall": [
+    { "t": 0, "position": [42, 9, 36], "lookAt": [28, 3, 28], "fov": 40 },
+    { "t": 1, "position": [22, 9, 42], "lookAt": [28, 3, 28], "fov": 40 }
+  ],
+  "benevolenceHouse": [
+    { "t": 0, "position": [18, 6, 50], "lookAt": [2, 3, 34], "fov": 39 },
+    { "t": 1, "position": [-8, 6, 48], "lookAt": [2, 3, 34], "fov": 39 }
+  ],
+  "studentCentre": [
+    { "t": 0, "position": [-28, 7, 34], "lookAt": [-24, 3, 16], "fov": 40 },
+    { "t": 1, "position": [-38, 8, 18], "lookAt": [-24, 3, 16], "fov": 40 }
+  ],
+  "boardingHouses": [
+    { "t": 0, "position": [-42, 12, 8], "lookAt": [-30, 4, -2], "fov": 40 },
+    { "t": 1, "position": [-38, 11, -20], "lookAt": [-24, 4, -14], "fov": 40 }
+  ],
+  "heritageGallery": [
+    { "t": 0, "position": [-20, 8, -30], "lookAt": [-4, 3, -34], "fov": 37 },
+    { "t": 0.5, "position": [-2, 8, -24], "lookAt": [-4, 3, -34], "fov": 37 },
+    { "t": 1, "position": [8, 8, -38], "lookAt": [-4, 3, -34], "fov": 37 }
+  ],
+  "campusGreen": [
+    { "t": 0, "position": [0, 5, -46], "lookAt": [12, 2, -40], "fov": 42 },
+    { "t": 1, "position": [38, 6, -42], "lookAt": [28, 2, -36], "fov": 42 }
+  ],
+  "bigField": [
+    { "t": 0, "position": [8, 16, -64], "lookAt": [42, 1, -52], "fov": 44 },
+    { "t": 0.5, "position": [46, 8, -62], "lookAt": [42, 1, -52], "fov": 43 },
+    { "t": 1, "position": [62, 18, -34], "lookAt": [42, 2, -52], "fov": 42 }
+  ],
+  "finaleRise": [
+    { "t": 0, "position": [54, 28, -10], "lookAt": [8, 0, -10], "fov": 40 },
+    { "t": 1, "position": [80, 90, 90], "lookAt": [4, 2, -12], "fov": 34 }
+  ]
+}

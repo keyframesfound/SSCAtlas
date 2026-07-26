@@ -1,0 +1,185 @@
+{
+  "openingPrompt": "Scroll to Begin",
+  "chapters": [
+    {
+      "id": "opening-sequence",
+      "kind": "opening",
+      "start": 0,
+      "end": 0.07,
+      "headline": "Scroll to Begin",
+      "title": "Stanley Peninsula",
+      "description": "Monochrome contours rise into terrain as the campus emerges from darkness.",
+      "cameraPathId": "openingDescent"
+    },
+    {
+      "id": "campus-reveal",
+      "kind": "reveal",
+      "start": 0.07,
+      "end": 0.14,
+      "headline": "40 Acres",
+      "title": "Hong Kong's Largest Secondary School Campus",
+      "description": "The boundary traces in light before the camera begins its architectural descent.",
+      "cameraPathId": "boundaryReveal"
+    },
+    {
+      "id": "main-entrance",
+      "kind": "chapter",
+      "start": 0.14,
+      "end": 0.19,
+      "headline": "A Timeless Arrival",
+      "title": "Main Entrance",
+      "description": "A ceremonial arrival sequence that establishes prestige and identity.",
+      "cameraPathId": "mainEntrance"
+    },
+    {
+      "id": "school-house",
+      "kind": "chapter",
+      "start": 0.19,
+      "end": 0.24,
+      "headline": "The Heart of the College",
+      "title": "School House",
+      "description": "An elegant orbit and crane reveal craftsmanship at the architectural core.",
+      "cameraPathId": "schoolHouse"
+    },
+    {
+      "id": "martin-hostel",
+      "kind": "chapter",
+      "start": 0.24,
+      "end": 0.29,
+      "headline": "A Tradition of Boarding",
+      "title": "Martin Hostel",
+      "description": "Warm evening passes capture residential life and community character.",
+      "cameraPathId": "martinHostel"
+    },
+    {
+      "id": "chapel",
+      "kind": "chapter",
+      "start": 0.29,
+      "end": 0.34,
+      "headline": "A Place of Reflection",
+      "title": "Chapel",
+      "description": "Minimal camera motion and balanced composition celebrate light and silence.",
+      "cameraPathId": "chapel"
+    },
+    {
+      "id": "classroom-block",
+      "kind": "chapter",
+      "start": 0.34,
+      "end": 0.39,
+      "headline": "The Academic Core",
+      "title": "Classroom Block",
+      "description": "A forward track with vertical reveal frames modern learning spaces.",
+      "cameraPathId": "classroomBlock"
+    },
+    {
+      "id": "library",
+      "kind": "chapter",
+      "start": 0.39,
+      "end": 0.44,
+      "headline": "A Space for Curiosity",
+      "title": "Library",
+      "description": "Gentle circular movement explores openness, knowledge, and reflection.",
+      "cameraPathId": "library"
+    },
+    {
+      "id": "science-centre",
+      "kind": "chapter",
+      "start": 0.44,
+      "end": 0.49,
+      "headline": "Innovation in Practice",
+      "title": "Science Centre",
+      "description": "Confident linear motion emphasizes geometric precision and future focus.",
+      "cameraPathId": "scienceCentre"
+    },
+    {
+      "id": "ng-wah-hall",
+      "kind": "chapter",
+      "start": 0.49,
+      "end": 0.54,
+      "headline": "Gathering at Scale",
+      "title": "Ng Wah Hall",
+      "description": "A wide reveal and interior-oriented sweep capture moments of assembly.",
+      "cameraPathId": "ngWahHall"
+    },
+    {
+      "id": "tang-shiu-kin-hall",
+      "kind": "chapter",
+      "start": 0.54,
+      "end": 0.59,
+      "headline": "Performance and Community",
+      "title": "Tang Shiu Kin Hall",
+      "description": "Elegant tracking language frames performance and student culture.",
+      "cameraPathId": "tangShiuKinHall"
+    },
+    {
+      "id": "benevolence-house",
+      "kind": "chapter",
+      "start": 0.59,
+      "end": 0.64,
+      "headline": "Community in Action",
+      "title": "Benevolence House",
+      "description": "Low sweeping movement in warm light conveys wellbeing and connection.",
+      "cameraPathId": "benevolenceHouse"
+    },
+    {
+      "id": "student-centre",
+      "kind": "chapter",
+      "start": 0.64,
+      "end": 0.69,
+      "headline": "Student Life",
+      "title": "Leung Kau Kui Student Centre",
+      "description": "Curved tracking through courtyards highlights leadership and friendship.",
+      "cameraPathId": "studentCentre"
+    },
+    {
+      "id": "boarding-houses",
+      "kind": "chapter",
+      "start": 0.69,
+      "end": 0.74,
+      "headline": "Living on Campus",
+      "title": "North House and College House",
+      "description": "An evening fly-through reveals paired houses and residential belonging.",
+      "cameraPathId": "boardingHouses"
+    },
+    {
+      "id": "heritage-gallery",
+      "kind": "chapter",
+      "start": 0.74,
+      "end": 0.79,
+      "headline": "Where Heritage Lives",
+      "title": "Heritage Gallery",
+      "description": "A slow orbit studies preserved details, memory, and material craft.",
+      "cameraPathId": "heritageGallery"
+    },
+    {
+      "id": "campus-green",
+      "kind": "chapter",
+      "start": 0.79,
+      "end": 0.86,
+      "headline": "The Campus Green",
+      "title": "Central Square and Bell Plaza",
+      "description": "Walking-height movement reveals gathering spaces and daily campus energy.",
+      "cameraPathId": "campusGreen"
+    },
+    {
+      "id": "big-field",
+      "kind": "chapter",
+      "start": 0.86,
+      "end": 0.93,
+      "headline": "Space to Compete",
+      "title": "Big Field",
+      "description": "Sweeping aerial and low passes express scale, athletics, and landscape.",
+      "cameraPathId": "bigField"
+    },
+    {
+      "id": "finale",
+      "kind": "finale",
+      "start": 0.93,
+      "end": 1,
+      "headline": "One Campus. One Legacy.",
+      "title": "St. Stephen's College",
+      "description": "The campus resolves into one sunset composition of heritage and future.",
+      "cameraPathId": "finaleRise"
+    }
+  ]
+}

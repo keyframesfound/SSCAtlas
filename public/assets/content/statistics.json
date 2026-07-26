@@ -1,0 +1,27 @@
+{
+  "campusAcreage": "40 Acres",
+  "tagline": "Hong Kong's Largest Secondary School Campus",
+  "subline": "Over a century of learning, architecture and community overlooking the South China Sea.",
+  "finalTitle": "St. Stephen's College",
+  "finalSubtitle": "A Legacy of Learning. A Community for Life.",
+  "boundaryPoints": [
+    [-46, 0.4, 36],
+    [-34, 0.4, 48],
+    [-12, 0.4, 52],
+    [14, 0.4, 48],
+    [36, 0.4, 34],
+    [48, 0.4, 8],
+    [44, 0.4, -20],
+    [30, 0.4, -44],
+    [8, 0.4, -56],
+    [-14, 0.4, -54],
+    [-36, 0.4, -36],
+    [-50, 0.4, -8],
+    [-46, 0.4, 36]
+  ],
+  "model": {
+    "url": "/assets/models/ssc-campus.glb",
+    "objectRoot": "SSC_Campus",
+    "replaceInstructions": "Replace /public/assets/models/ssc-campus.glb with the production campus model. Preserve named objects in the hierarchy for chapter targeting."
+  }
+}
