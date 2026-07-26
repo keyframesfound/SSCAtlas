@@ -120,13 +120,18 @@ function ModelErrorOverlay({ message }: { message: string | null }) {
 
 type ModelCheckStatus = "idle" | "checking" | "ready" | "invalid";
 
+function isCrossOriginModelPath(modelPath: string): boolean {
+  try {
+    const resolved = new URL(modelPath, window.location.href);
+    return resolved.origin !== window.location.origin;
+  } catch {
+    return false;
+  }
+}
+
 async function validateModelHeader(modelPath: string): Promise<{ ok: true } | { ok: false; reason: string }> {
   try {
-    const response = await fetch(modelPath, {
-      headers: {
-        Range: "bytes=0-255",
-      },
-    });
+    const response = await fetch(modelPath);
 
     if (!response.ok) {
       return { ok: false, reason: `HTTP ${response.status} while fetching model.` };
@@ -167,7 +172,7 @@ async function validateModelHeader(modelPath: string): Promise<{ ok: true } | { 
       ok: false,
       reason:
         error instanceof Error
-          ? `Unable to fetch model file: ${error.message}`
+          ? `Unable to fetch model file: ${error.message}. Check that the URL is public and allows CORS from this site.`
           : "Unable to fetch model file.",
     };
   }
@@ -421,6 +426,11 @@ function SceneContent({ timeline, buildings, progress, modelPath }: CampusSceneP
     }
 
     let isCancelled = false;
+
+    if (isCrossOriginModelPath(modelPath)) {
+      setModelCheckStatus("ready");
+      return;
+    }
 
     setModelCheckStatus("checking");
     void validateModelHeader(modelPath).then((result) => {
