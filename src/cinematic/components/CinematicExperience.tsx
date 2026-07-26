@@ -7,10 +7,15 @@ import { ChapterOverlay } from "./ChapterOverlay";
 import { LoadingScreen } from "./LoadingScreen";
 
 const CAMPUS_MODEL_PATH = "/assets/models/campus.glb";
+const CAMPUS_MODEL_PROXY_PATH = "/api/campus-model";
 
 function resolveModelPath(path: string): string {
   if (path !== CAMPUS_MODEL_PATH) {
     return path;
+  }
+
+  if (import.meta.env.PROD) {
+    return CAMPUS_MODEL_PROXY_PATH;
   }
 
   const externalCampusModelUrl = import.meta.env.VITE_CAMPUS_MODEL_URL;
