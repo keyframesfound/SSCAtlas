@@ -1,0 +1,348 @@
+:root {
+  --midnight-black: #050608;
+  --deep-navy: #0a1f44;
+  --graphite: #121417;
+  --soft-white: #f4f5f7;
+  --muted-white: rgba(244, 245, 247, 0.72);
+  --subtle-white: rgba(244, 245, 247, 0.46);
+  --accent-blue: rgba(144, 174, 245, 0.58);
+
+  font-family: 'SF Pro Display', 'Geist', 'Inter', 'Helvetica Neue', sans-serif;
+  font-synthesis: none;
+  text-rendering: geometricPrecision;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  width: 100%;
+  min-height: 100%;
+  margin: 0;
+}
+
+body {
+  color: var(--soft-white);
+  background:
+    radial-gradient(circle at 12% 16%, rgba(67, 94, 142, 0.26), transparent 34%),
+    radial-gradient(circle at 76% 0%, rgba(241, 166, 107, 0.12), transparent 36%),
+    linear-gradient(180deg, #050608 0%, #080b10 30%, #050608 100%);
+}
+
+.atlas-shell {
+  position: relative;
+  width: 100%;
+}
+
+.atlas-stage {
+  position: fixed;
+  inset: 0;
+  overflow: clip;
+}
+
+.scroll-track {
+  width: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.overlay-vignette {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 50% 58%, transparent 20%, rgba(0, 0, 0, 0.38) 70%),
+    linear-gradient(180deg, rgba(5, 6, 8, 0.84) 0%, transparent 32%, rgba(5, 6, 8, 0.44) 100%);
+  transition: opacity 420ms ease;
+}
+
+.overlay-progress {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.12);
+  z-index: 20;
+}
+
+.overlay-progress span {
+  display: block;
+  width: 100%;
+  height: 100%;
+  transform-origin: left center;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.34), rgba(153, 183, 244, 0.98));
+}
+
+.overlay-loading {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  z-index: 30;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 480ms ease;
+  backdrop-filter: blur(8px);
+  background: rgba(5, 6, 8, 0.64);
+}
+
+.overlay-loading.visible {
+  opacity: 1;
+}
+
+.overlay-loading p {
+  margin: 0;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-size: 0.74rem;
+  color: var(--muted-white);
+}
+
+.overlay-scroll {
+  position: absolute;
+  left: 50%;
+  bottom: 10vh;
+  translate: -50% 18px;
+  opacity: 0;
+  transition: opacity 500ms ease, translate 500ms ease;
+  z-index: 18;
+  pointer-events: none;
+}
+
+.overlay-scroll.visible {
+  opacity: 1;
+  translate: -50% 0;
+}
+
+.overlay-scroll p {
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.26em;
+  font-size: 0.74rem;
+  color: var(--muted-white);
+}
+
+.overlay-chapter {
+  position: absolute;
+  left: clamp(1rem, 5vw, 4rem);
+  bottom: clamp(1rem, 9vh, 6.5rem);
+  width: min(42rem, calc(100vw - 2rem));
+  z-index: 15;
+  transition: opacity 360ms ease;
+}
+
+.overlay-chapter.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.overlay-chapter .eyebrow {
+  margin: 0 0 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  font-size: 0.72rem;
+  color: var(--muted-white);
+}
+
+.overlay-chapter h1 {
+  margin: 0;
+  max-width: 22ch;
+  line-height: 0.98;
+  letter-spacing: -0.03em;
+  font-weight: 480;
+  font-size: clamp(2.2rem, 5.5vw, 6rem);
+  color: var(--soft-white);
+}
+
+.overlay-chapter .description {
+  margin: 1.2rem 0 0;
+  max-width: 44ch;
+  line-height: 1.58;
+  font-size: clamp(0.94rem, 1.15vw, 1.08rem);
+  color: var(--muted-white);
+}
+
+.details-toggle {
+  margin-top: 1.4rem;
+  border: 1px solid rgba(244, 245, 247, 0.24);
+  background: rgba(5, 6, 8, 0.34);
+  color: var(--soft-white);
+  border-radius: 999px;
+  text-transform: uppercase;
+  letter-spacing: 0.13em;
+  font-size: 0.64rem;
+  padding: 0.65rem 1rem;
+  cursor: pointer;
+}
+
+.details-panel {
+  margin-top: 0.85rem;
+  max-width: 48ch;
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: max-height 320ms ease, opacity 320ms ease;
+}
+
+.details-panel.expanded {
+  max-height: 8rem;
+  opacity: 1;
+}
+
+.details-panel p {
+  margin: 0;
+  line-height: 1.6;
+  color: var(--subtle-white);
+  font-size: 0.87rem;
+}
+
+.overlay-reveal {
+  position: absolute;
+  inset: auto 0 12vh;
+  margin-inline: auto;
+  width: min(54rem, calc(100vw - 2rem));
+  text-align: center;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 520ms ease, transform 520ms ease;
+  pointer-events: none;
+  z-index: 16;
+}
+
+.overlay-reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.overlay-reveal h2,
+.overlay-reveal h3,
+.overlay-reveal p {
+  margin: 0;
+}
+
+.overlay-reveal h2 {
+  font-size: clamp(2rem, 7vw, 5rem);
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+
+.overlay-reveal h3 {
+  margin-top: 0.85rem;
+  font-size: clamp(0.96rem, 1.8vw, 1.34rem);
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--muted-white);
+}
+
+.overlay-reveal p {
+  margin: 1rem auto 0;
+  max-width: 62ch;
+  line-height: 1.6;
+  color: var(--subtle-white);
+}
+
+.overlay-finale {
+  position: absolute;
+  inset: auto 0 11vh;
+  margin-inline: auto;
+  width: min(52rem, calc(100vw - 2rem));
+  text-align: center;
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 560ms ease, transform 560ms ease;
+  pointer-events: none;
+  z-index: 19;
+}
+
+.overlay-finale.visible {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.crest-mark {
+  margin: 0 auto 1rem;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  border: 1px solid rgba(244, 245, 247, 0.35);
+  display: grid;
+  place-items: center;
+  letter-spacing: 0.13em;
+  font-size: 0.68rem;
+  color: var(--muted-white);
+}
+
+.overlay-finale h2 {
+  margin: 0;
+  font-size: clamp(2rem, 6vw, 4.4rem);
+  letter-spacing: -0.03em;
+  line-height: 1.02;
+}
+
+.overlay-finale p {
+  margin: 0.8rem 0 0;
+  color: var(--muted-white);
+  letter-spacing: 0.04em;
+}
+
+.overlay-finale button {
+  margin-top: 1.8rem;
+  border: 0;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #f4f5f7 0%, #bcc8e2 100%);
+  color: #111318;
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  padding: 0.94rem 1.6rem;
+  cursor: pointer;
+}
+
+.loading-shell,
+.error-shell {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  text-align: center;
+  padding: 2rem;
+}
+
+.error-shell h1 {
+  margin: 0;
+  font-size: 2rem;
+}
+
+.error-shell p {
+  margin: 0.7rem 0 0;
+  color: var(--muted-white);
+}
+
+@media (max-width: 720px) {
+  .overlay-chapter {
+    width: calc(100vw - 1.5rem);
+    left: 0.75rem;
+    bottom: 1.35rem;
+  }
+
+  .overlay-chapter .description {
+    font-size: 0.91rem;
+    max-width: 30ch;
+  }
+
+  .overlay-reveal,
+  .overlay-finale {
+    width: calc(100vw - 1.5rem);
+    inset: auto 0 9vh;
+  }
+
+  .details-panel.expanded {
+    max-height: 9.5rem;
+  }
+}

@@ -1,0 +1,121 @@
+[
+  {
+    "id": "MainEntrance",
+    "name": "Main Entrance",
+    "chapter": "A Timeless Arrival",
+    "description": "A ceremonial threshold that frames the college's identity against woodland and sea.",
+    "position": [-18, 2, 42]
+  },
+  {
+    "id": "SchoolHouse",
+    "name": "School House",
+    "chapter": "The Heart of the College",
+    "description": "The architectural centrepiece where heritage masonry meets contemporary learning life.",
+    "position": [-5, 4, 25]
+  },
+  {
+    "id": "MartinHostel",
+    "name": "Martin Hostel",
+    "chapter": "A Tradition of Boarding",
+    "description": "Warmly lit facades and courtyards that define the college's boarding tradition.",
+    "position": [24, 3, 18]
+  },
+  {
+    "id": "Chapel",
+    "name": "Chapel",
+    "chapter": "A Place of Reflection",
+    "description": "A symmetrical sanctuary where light, proportion, and stillness guide the experience.",
+    "position": [12, 4, -2]
+  },
+  {
+    "id": "ClassroomBlock",
+    "name": "Classroom Block",
+    "chapter": "The Academic Core",
+    "description": "Modern teaching spaces threaded through tree-lined circulation and terraces.",
+    "position": [-8, 4, -20]
+  },
+  {
+    "id": "Library",
+    "name": "Library",
+    "chapter": "A Space for Curiosity",
+    "description": "A quiet civic room of knowledge, openness, and daylight.",
+    "position": [18, 3, -24]
+  },
+  {
+    "id": "ScienceCentre",
+    "name": "Science Centre",
+    "chapter": "Innovation in Practice",
+    "description": "Strong geometric volumes expressing experimentation, discovery, and future thinking.",
+    "position": [35, 5, -16]
+  },
+  {
+    "id": "NgWahHall",
+    "name": "Ng Wah Hall",
+    "chapter": "Gathering at Scale",
+    "description": "A large assembly volume designed for milestone moments and collective celebration.",
+    "position": [40, 4, 6]
+  },
+  {
+    "id": "TangShiuKinHall",
+    "name": "Tang Shiu Kin Hall",
+    "chapter": "Performance and Community",
+    "description": "An events venue where student culture and performance life converge.",
+    "position": [28, 3, 28]
+  },
+  {
+    "id": "BenevolenceHouse",
+    "name": "Benevolence House",
+    "chapter": "Community in Action",
+    "description": "A warm, human-scaled setting centered on wellbeing and connection.",
+    "position": [2, 3, 34]
+  },
+  {
+    "id": "LeungKauKuiStudentCentre",
+    "name": "Leung Kau Kui Student Centre",
+    "chapter": "Student Life",
+    "description": "An active social anchor shaped by leadership, friendship, and campus rhythm.",
+    "position": [-24, 3, 16]
+  },
+  {
+    "id": "NorthHouse",
+    "name": "North House",
+    "chapter": "Living on Campus",
+    "description": "One half of a paired residential chapter rooted in belonging and tradition.",
+    "position": [-30, 4, -2]
+  },
+  {
+    "id": "CollegeHouse",
+    "name": "College House",
+    "chapter": "Living on Campus",
+    "description": "A companion residential volume that completes the boarding community.",
+    "position": [-24, 4, -14]
+  },
+  {
+    "id": "HeritageGallery",
+    "name": "Heritage Gallery",
+    "chapter": "Where Heritage Lives",
+    "description": "A preserved narrative in crafted materials, details, and memory.",
+    "position": [-4, 3, -34]
+  },
+  {
+    "id": "CentralSquare",
+    "name": "Central Square",
+    "chapter": "The Campus Green",
+    "description": "A connective civic heart for daily encounters and shared momentum.",
+    "position": [12, 2, -40]
+  },
+  {
+    "id": "BellPlaza",
+    "name": "Bell Plaza",
+    "chapter": "The Campus Green",
+    "description": "An iconic open node linking pathways, facades, and campus life.",
+    "position": [28, 2, -36]
+  },
+  {
+    "id": "BigField",
+    "name": "Big Field",
+    "chapter": "Space to Compete",
+    "description": "A vast athletic landscape framed by architecture, woodland, and coastline.",
+    "position": [42, 1, -52]
+  }
+]
