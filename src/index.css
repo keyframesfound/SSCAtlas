@@ -133,6 +133,11 @@ body {
   left: clamp(1rem, 5vw, 4rem);
   bottom: clamp(1rem, 9vh, 6.5rem);
   width: min(42rem, calc(100vw - 2rem));
+  padding: 1rem 1.1rem 1.05rem;
+  border-radius: 0.9rem;
+  background:
+    radial-gradient(circle at 18% 20%, rgba(0, 0, 0, 0.32), transparent 60%),
+    linear-gradient(135deg, rgba(0, 0, 0, 0.54), rgba(0, 0, 0, 0.34));
   z-index: 15;
   transition: opacity 360ms ease;
 }
@@ -240,6 +245,11 @@ body {
   inset: auto 0 12vh;
   margin-inline: auto;
   width: min(54rem, calc(100vw - 2rem));
+  padding: 1.2rem 1.3rem;
+  border-radius: 1rem;
+  background:
+    radial-gradient(circle at 50% 12%, rgba(0, 0, 0, 0.28), transparent 68%),
+    linear-gradient(180deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.26));
   text-align: center;
   opacity: 0;
   transform: translateY(20px);
@@ -285,6 +295,11 @@ body {
   inset: auto 0 11vh;
   margin-inline: auto;
   width: min(52rem, calc(100vw - 2rem));
+  padding: 1.2rem 1.3rem;
+  border-radius: 1rem;
+  background:
+    radial-gradient(circle at 50% 10%, rgba(0, 0, 0, 0.3), transparent 68%),
+    linear-gradient(180deg, rgba(0, 0, 0, 0.52), rgba(0, 0, 0, 0.28));
   text-align: center;
   opacity: 0;
   transform: translateY(24px);
