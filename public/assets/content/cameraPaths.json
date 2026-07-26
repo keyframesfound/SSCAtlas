@@ -1,6 +1,6 @@
 {
   "openingDescent": [
-    { "t": 0, "position": [0, 340, 580], "lookAt": [0, 0, 0], "fov": 34 },
+    { "t": 0, "position": [-286.4, -458.11, 127.86], "lookAt": [0, 0, 0], "fov": 34 },
     { "t": 0.5, "position": [20, 260, 380], "lookAt": [6, 0, 2], "fov": 34 },
     { "t": 1, "position": [26, 190, 250], "lookAt": [8, 0, 0], "fov": 36 }
   ],
@@ -46,9 +46,9 @@
     { "t": 0, "position": [42, 9, 36], "lookAt": [28, 3, 28], "fov": 40 },
     { "t": 1, "position": [22, 9, 42], "lookAt": [28, 3, 28], "fov": 40 }
   ],
-  "benevolenceHouse": [
-    { "t": 0, "position": [18, 6, 50], "lookAt": [2, 3, 34], "fov": 39 },
-    { "t": 1, "position": [-8, 6, 48], "lookAt": [2, 3, 34], "fov": 39 }
+"benevolenceHouse": [
+    { "t": 0, "position": [-229.115, -355.846, 79.5844], "lookAt": [-179.777, -283.079, 70.3312], "fov": 15 },
+    { "t": 1, "position": [-271.594, -300.264, 101.989], "lookAt": [-182.169, -290.533, 75.4296], "fov": 15 }
   ],
   "studentCentre": [
     { "t": 0, "position": [-28, 7, 34], "lookAt": [-24, 3, 16], "fov": 40 },
