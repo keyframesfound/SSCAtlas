@@ -2,6 +2,7 @@ import type {
   AtlasContent,
   BuildingDefinition,
   CameraPathMap,
+  HeritageProfile,
   StatisticsContent,
   TimelineContent,
 } from '../types/content'
@@ -17,11 +18,12 @@ const readJson = async <T>(path: string): Promise<T> => {
 }
 
 export const loadAtlasContent = async (): Promise<AtlasContent> => {
-  const [buildings, cameraPaths, timeline, statistics] = await Promise.all([
+  const [buildings, cameraPaths, timeline, statistics, heritageProfiles] = await Promise.all([
     readJson<BuildingDefinition[]>('/assets/content/buildings.json'),
     readJson<CameraPathMap>('/assets/content/cameraPaths.json'),
     readJson<TimelineContent>('/assets/content/timeline.json'),
     readJson<StatisticsContent>('/assets/content/statistics.json'),
+    readJson<HeritageProfile[]>('/assets/content/heritageProfiles.json'),
   ])
 
   return {
@@ -29,5 +31,6 @@ export const loadAtlasContent = async (): Promise<AtlasContent> => {
     cameraPaths,
     timeline,
     statistics,
+    heritageProfiles,
   }
 }

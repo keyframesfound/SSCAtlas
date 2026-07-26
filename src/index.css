@@ -202,6 +202,39 @@ body {
   font-size: 0.87rem;
 }
 
+.heritage-notes {
+  display: grid;
+  gap: 0.8rem;
+}
+
+.heritage-note {
+  margin: 0;
+  padding: 0.7rem 0.8rem;
+  border: 1px solid rgba(244, 245, 247, 0.12);
+  border-radius: 0.6rem;
+  background: rgba(8, 12, 18, 0.55);
+}
+
+.heritage-note h4 {
+  margin: 0;
+  font-size: 0.84rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--soft-white);
+}
+
+.heritage-note .meta {
+  margin: 0.35rem 0 0;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  color: rgba(244, 245, 247, 0.56);
+}
+
+.heritage-note p {
+  margin-top: 0.5rem;
+}
+
 .overlay-reveal {
   position: absolute;
   inset: auto 0 12vh;
@@ -290,6 +323,27 @@ body {
   margin: 0.8rem 0 0;
   color: var(--muted-white);
   letter-spacing: 0.04em;
+}
+
+.heritage-register {
+  margin: 1.2rem auto 0;
+  max-width: min(50rem, 90vw);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.4rem 0.5rem;
+}
+
+.heritage-register p {
+  margin: 0;
+  border: 1px solid rgba(244, 245, 247, 0.16);
+  border-radius: 999px;
+  padding: 0.3rem 0.62rem;
+  font-size: 0.62rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(244, 245, 247, 0.82);
+  background: rgba(5, 6, 8, 0.34);
 }
 
 .overlay-finale button {

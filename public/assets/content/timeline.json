@@ -29,7 +29,8 @@
       "headline": "A Timeless Arrival",
       "title": "Main Entrance",
       "description": "A ceremonial arrival sequence that establishes prestige and identity.",
-      "cameraPathId": "mainEntrance"
+      "cameraPathId": "mainEntrance",
+      "focusBuildingIds": ["SchoolHouse"]
     },
     {
       "id": "school-house",
@@ -39,7 +40,8 @@
       "headline": "The Heart of the College",
       "title": "School House",
       "description": "An elegant orbit and crane reveal craftsmanship at the architectural core.",
-      "cameraPathId": "schoolHouse"
+      "cameraPathId": "schoolHouse",
+      "focusBuildingIds": ["SchoolHouse"]
     },
     {
       "id": "martin-hostel",
@@ -49,7 +51,8 @@
       "headline": "A Tradition of Boarding",
       "title": "Martin Hostel",
       "description": "Warm evening passes capture residential life and community character.",
-      "cameraPathId": "martinHostel"
+      "cameraPathId": "martinHostel",
+      "focusBuildingIds": ["MartinHostel"]
     },
     {
       "id": "chapel",
@@ -59,7 +62,8 @@
       "headline": "A Place of Reflection",
       "title": "Chapel",
       "description": "Minimal camera motion and balanced composition celebrate light and silence.",
-      "cameraPathId": "chapel"
+      "cameraPathId": "chapel",
+      "focusBuildingIds": ["Chapel"]
     },
     {
       "id": "classroom-block",
@@ -69,7 +73,8 @@
       "headline": "The Academic Core",
       "title": "Classroom Block",
       "description": "A forward track with vertical reveal frames modern learning spaces.",
-      "cameraPathId": "classroomBlock"
+      "cameraPathId": "classroomBlock",
+      "focusBuildingIds": ["ClassroomBlock"]
     },
     {
       "id": "library",
@@ -89,7 +94,8 @@
       "headline": "Innovation in Practice",
       "title": "Science Centre",
       "description": "Confident linear motion emphasizes geometric precision and future focus.",
-      "cameraPathId": "scienceCentre"
+      "cameraPathId": "scienceCentre",
+      "focusBuildingIds": ["SpecialRoomBlock", "OldLaboratory"]
     },
     {
       "id": "ng-wah-hall",
@@ -99,7 +105,8 @@
       "headline": "Gathering at Scale",
       "title": "Ng Wah Hall",
       "description": "A wide reveal and interior-oriented sweep capture moments of assembly.",
-      "cameraPathId": "ngWahHall"
+      "cameraPathId": "ngWahHall",
+      "focusBuildingIds": ["NgWahHall"]
     },
     {
       "id": "tang-shiu-kin-hall",
@@ -109,7 +116,8 @@
       "headline": "Performance and Community",
       "title": "Tang Shiu Kin Hall",
       "description": "Elegant tracking language frames performance and student culture.",
-      "cameraPathId": "tangShiuKinHall"
+      "cameraPathId": "tangShiuKinHall",
+      "focusBuildingIds": ["BigField"]
     },
     {
       "id": "benevolence-house",
@@ -119,7 +127,8 @@
       "headline": "Community in Action",
       "title": "Benevolence House",
       "description": "Low sweeping movement in warm light conveys wellbeing and connection.",
-      "cameraPathId": "benevolenceHouse"
+      "cameraPathId": "benevolenceHouse",
+      "focusBuildingIds": ["BenevolenceHouse"]
     },
     {
       "id": "student-centre",
@@ -129,7 +138,8 @@
       "headline": "Student Life",
       "title": "Leung Kau Kui Student Centre",
       "description": "Curved tracking through courtyards highlights leadership and friendship.",
-      "cameraPathId": "studentCentre"
+      "cameraPathId": "studentCentre",
+      "focusBuildingIds": ["LeungKauKuiStudentCentre"]
     },
     {
       "id": "boarding-houses",
@@ -139,7 +149,8 @@
       "headline": "Living on Campus",
       "title": "North House and College House",
       "description": "An evening fly-through reveals paired houses and residential belonging.",
-      "cameraPathId": "boardingHouses"
+      "cameraPathId": "boardingHouses",
+      "focusBuildingIds": ["NorthHouse", "CollegeHouse"]
     },
     {
       "id": "heritage-gallery",
@@ -149,7 +160,8 @@
       "headline": "Where Heritage Lives",
       "title": "Heritage Gallery",
       "description": "A slow orbit studies preserved details, memory, and material craft.",
-      "cameraPathId": "heritageGallery"
+      "cameraPathId": "heritageGallery",
+      "focusBuildingIds": ["HeritageGallery", "Bungalow4", "Bungalow1", "Bungalow2", "Bungalow5"]
     },
     {
       "id": "campus-green",
@@ -169,7 +181,8 @@
       "headline": "Space to Compete",
       "title": "Big Field",
       "description": "Sweeping aerial and low passes express scale, athletics, and landscape.",
-      "cameraPathId": "bigField"
+      "cameraPathId": "bigField",
+      "focusBuildingIds": ["BigField", "WilsonWangWaterSportsCentre"]
     },
     {
       "id": "finale",
@@ -179,7 +192,30 @@
       "headline": "One Campus. One Legacy.",
       "title": "St. Stephen's College",
       "description": "The campus resolves into one sunset composition of heritage and future.",
-      "cameraPathId": "finaleRise"
+      "cameraPathId": "finaleRise",
+      "focusBuildingIds": [
+        "SchoolHouse",
+        "MartinHostel",
+        "OldLaboratory",
+        "Bungalow1",
+        "Bungalow2",
+        "HeritageGallery",
+        "Bungalow4",
+        "Bungalow5",
+        "Chapel",
+        "NgWahHall",
+        "ClassroomBlock",
+        "NorthHouse",
+        "BigField",
+        "BenevolenceHouse",
+        "SpecialRoomBlock",
+        "WilsonWangWaterSportsCentre",
+        "AlexYDAuBuilding",
+        "LukeYipBuilding",
+        "LeungKauKuiStudentCentre",
+        "CentenaryBuilding",
+        "CollegeHouse"
+      ]
     }
   ]
 }

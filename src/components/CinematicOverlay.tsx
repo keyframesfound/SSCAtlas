@@ -15,6 +15,16 @@ export const CinematicOverlay = ({ content, progress, loading }: CinematicOverla
     () => chapterAtProgress(content.timeline.chapters, progress),
     [content.timeline.chapters, progress],
   )
+  const profileMap = useMemo(
+    () => new Map(content.heritageProfiles.map((profile) => [profile.id, profile])),
+    [content.heritageProfiles],
+  )
+  const focusedProfiles = useMemo(() => {
+    const ids = chapter.focusBuildingIds ?? []
+    return ids
+      .map((id) => profileMap.get(id))
+      .filter((profile): profile is NonNullable<typeof profile> => Boolean(profile))
+  }, [chapter.focusBuildingIds, profileMap])
 
   const openingVisible = progress < 0.08
   const finalVisible = chapter.kind === 'finale'
@@ -50,11 +60,24 @@ export const CinematicOverlay = ({ content, progress, loading }: CinematicOverla
         )}
 
         <div className={`details-panel ${expanded ? 'expanded' : ''}`}>
-          <p>
-            Chapter pacing is driven by a single scroll timeline and references one master campus
-            model. Replace the content JSON and model asset to update the story without changing
-            source code.
-          </p>
+          {focusedProfiles.length > 0 ? (
+            <div className="heritage-notes">
+              {focusedProfiles.map((profile) => (
+                <article key={profile.id} className="heritage-note">
+                  <h4>{profile.name}</h4>
+                  <p className="meta">
+                    {profile.year} - {profile.grade}
+                  </p>
+                  <p>{profile.narrative}</p>
+                </article>
+              ))}
+            </div>
+          ) : (
+            <p>
+              Chapter pacing is driven by a single scroll timeline and references one master campus
+              model. Replace content JSON and model assets to update the narrative.
+            </p>
+          )}
         </div>
       </aside>
 
@@ -68,6 +91,11 @@ export const CinematicOverlay = ({ content, progress, loading }: CinematicOverla
         <p className="crest-mark">SSC</p>
         <h2>{content.statistics.finalTitle}</h2>
         <p>{content.statistics.finalSubtitle}</p>
+        <div className="heritage-register">
+          {content.heritageProfiles.map((profile) => (
+            <p key={`register-${profile.id}`}>{profile.name}</p>
+          ))}
+        </div>
         <button type="button">Arrange a Campus Visit</button>
       </section>
 
