@@ -1,7 +1,7 @@
 import { Suspense, useEffect, useMemo, useRef, useState } from 'react'
 import { Canvas, useFrame, useThree } from '@react-three/fiber'
-import { Environment, FlyControls, Grid, OrbitControls, Sky, Sparkles } from '@react-three/drei'
-import { PerspectiveCamera, Vector3 } from 'three'
+import { Environment, Grid, OrbitControls, Sky, Sparkles } from '@react-three/drei'
+import { Euler, PerspectiveCamera, Vector3 } from 'three'
 import { CampusModel } from '../scene/CampusModel'
 import type { AtlasContent } from '../types/content'
 
@@ -18,6 +18,12 @@ type CameraSnapshot = {
 
 const lookDirection = new Vector3()
 const lookTarget = new Vector3()
+const movementVector = new Vector3()
+const strafeVector = new Vector3()
+const verticalVector = new Vector3(0, 1, 0)
+const euler = new Euler(0, 0, 0, 'YXZ')
+const initialDebugPosition: [number, number, number] = [0, 120, 220]
+const initialDebugLookAt: [number, number, number] = [0, 120, 0]
 
 type DebugCameraProbeProps = {
   focusDistance: number
@@ -27,7 +33,120 @@ type DebugCameraProbeProps = {
 }
 
 const DebugCameraProbe = ({ focusDistance, controlMode, turnDirection, onSnapshot }: DebugCameraProbeProps) => {
-  const { camera } = useThree()
+  const { camera, gl } = useThree()
+  const yawRef = useRef(0)
+  const pitchRef = useRef(0)
+  const dragState = useRef({ active: false, lastX: 0, lastY: 0 })
+  const keyState = useRef({
+    forward: false,
+    backward: false,
+    left: false,
+    right: false,
+    up: false,
+    down: false,
+  })
+
+  useEffect(() => {
+    camera.position.set(...initialDebugPosition)
+    camera.lookAt(...initialDebugLookAt)
+    const direction = new Vector3(...initialDebugLookAt).sub(camera.position).normalize()
+    yawRef.current = Math.atan2(direction.x, direction.z)
+    pitchRef.current = Math.asin(direction.y)
+  }, [camera])
+
+  useEffect(() => {
+    if (controlMode !== 'fly') {
+      dragState.current.active = false
+      return
+    }
+
+    const element = gl.domElement
+    const dragSensitivity = 0.0035
+
+    const onMouseDown = (event: MouseEvent) => {
+      if (event.button !== 0) {
+        return
+      }
+
+      dragState.current.active = true
+      dragState.current.lastX = event.clientX
+      dragState.current.lastY = event.clientY
+    }
+
+    const onMouseMove = (event: MouseEvent) => {
+      if (!dragState.current.active) {
+        return
+      }
+
+      const deltaX = event.clientX - dragState.current.lastX
+      const deltaY = event.clientY - dragState.current.lastY
+
+      dragState.current.lastX = event.clientX
+      dragState.current.lastY = event.clientY
+
+      yawRef.current -= deltaX * dragSensitivity
+      pitchRef.current -= deltaY * dragSensitivity
+      pitchRef.current = Math.max(-Math.PI / 2 + 0.01, Math.min(Math.PI / 2 - 0.01, pitchRef.current))
+    }
+
+    const endDrag = () => {
+      dragState.current.active = false
+    }
+
+    element.addEventListener('mousedown', onMouseDown)
+    window.addEventListener('mousemove', onMouseMove)
+    window.addEventListener('mouseup', endDrag)
+
+    return () => {
+      element.removeEventListener('mousedown', onMouseDown)
+      window.removeEventListener('mousemove', onMouseMove)
+      window.removeEventListener('mouseup', endDrag)
+    }
+  }, [controlMode, gl.domElement])
+
+  useEffect(() => {
+    const setKeyState = (key: string, pressed: boolean) => {
+      if (key === 'w') {
+        keyState.current.forward = pressed
+      }
+
+      if (key === 's') {
+        keyState.current.backward = pressed
+      }
+
+      if (key === 'a') {
+        keyState.current.left = pressed
+      }
+
+      if (key === 'd') {
+        keyState.current.right = pressed
+      }
+
+      if (key === 'r') {
+        keyState.current.up = pressed
+      }
+
+      if (key === 'f') {
+        keyState.current.down = pressed
+      }
+    }
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      setKeyState(event.key.toLowerCase(), true)
+    }
+
+    const onKeyUp = (event: KeyboardEvent) => {
+      setKeyState(event.key.toLowerCase(), false)
+    }
+
+    window.addEventListener('keydown', onKeyDown)
+    window.addEventListener('keyup', onKeyUp)
+
+    return () => {
+      window.removeEventListener('keydown', onKeyDown)
+      window.removeEventListener('keyup', onKeyUp)
+    }
+  }, [])
 
   useFrame((_, delta) => {
     if (camera instanceof PerspectiveCamera) {
@@ -36,7 +155,55 @@ const DebugCameraProbe = ({ focusDistance, controlMode, turnDirection, onSnapsho
     }
 
     if (controlMode === 'fly' && turnDirection !== 0) {
-      camera.rotateY(turnDirection * delta * 1.5)
+      yawRef.current += turnDirection * delta * 1.5
+    }
+
+    if (controlMode === 'fly') {
+      euler.set(pitchRef.current, yawRef.current, 0)
+      camera.quaternion.setFromEuler(euler)
+
+      movementVector.set(0, 0, 0)
+
+      if (keyState.current.forward) {
+        movementVector.z -= 1
+      }
+
+      if (keyState.current.backward) {
+        movementVector.z += 1
+      }
+
+      if (keyState.current.right) {
+        movementVector.x += 1
+      }
+
+      if (keyState.current.left) {
+        movementVector.x -= 1
+      }
+
+      if (keyState.current.up) {
+        movementVector.y += 1
+      }
+
+      if (keyState.current.down) {
+        movementVector.y -= 1
+      }
+
+      if (movementVector.lengthSq() > 0) {
+        const moveSpeed = 80 * delta
+        movementVector.normalize()
+
+        camera.getWorldDirection(lookDirection)
+        lookDirection.y = 0
+        if (lookDirection.lengthSq() > 0) {
+          lookDirection.normalize()
+        }
+
+        strafeVector.crossVectors(lookDirection, verticalVector).normalize().negate()
+
+        camera.position.addScaledVector(lookDirection, movementVector.z * moveSpeed)
+        camera.position.addScaledVector(strafeVector, movementVector.x * moveSpeed)
+        camera.position.addScaledVector(verticalVector, movementVector.y * moveSpeed)
+      }
     }
 
     camera.getWorldDirection(lookDirection)
@@ -89,8 +256,8 @@ export const DebugExplorer = ({ content, onSceneReady }: DebugExplorerProps) => 
   const [turnDirection, setTurnDirection] = useState(0)
   const turnState = useRef({ left: false, right: false })
   const [snapshot, setSnapshot] = useState<CameraSnapshot>({
-    position: [0, 120, 220],
-    lookAt: [0, 0, 0],
+    position: initialDebugPosition,
+    lookAt: initialDebugLookAt,
     fov: 40,
   })
 
@@ -155,7 +322,7 @@ export const DebugExplorer = ({ content, onSceneReady }: DebugExplorerProps) => 
         <Canvas
           dpr={[1, 2]}
           shadows
-          camera={{ position: [0, 120, 220], fov: 40, near: 0.1, far: 3000 }}
+          camera={{ position: initialDebugPosition, fov: 40, near: 0.1, far: 3000 }}
           gl={{ antialias: true, powerPreference: 'high-performance' }}
         >
           <Suspense fallback={null}>
@@ -182,9 +349,9 @@ export const DebugExplorer = ({ content, onSceneReady }: DebugExplorerProps) => 
               fadeStrength={1.5}
             />
             {controlMode === 'fly' ? (
-              <FlyControls movementSpeed={80} rollSpeed={0} dragToLook autoForward={false} />
+              <></>
             ) : (
-              <OrbitControls makeDefault enablePan enableZoom enableRotate />
+              <OrbitControls makeDefault enablePan enableZoom enableRotate target={initialDebugLookAt} />
             )}
           </Suspense>
         </Canvas>
