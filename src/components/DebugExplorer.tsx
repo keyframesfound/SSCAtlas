@@ -29,10 +29,17 @@ type DebugCameraProbeProps = {
   focusDistance: number
   controlMode: 'fly' | 'orbit'
   turnDirection: number
+  rollDirection: number
   onSnapshot: (snapshot: CameraSnapshot) => void
 }
 
-const DebugCameraProbe = ({ focusDistance, controlMode, turnDirection, onSnapshot }: DebugCameraProbeProps) => {
+const DebugCameraProbe = ({
+  focusDistance,
+  controlMode,
+  turnDirection,
+  rollDirection,
+  onSnapshot,
+}: DebugCameraProbeProps) => {
   const { camera, gl } = useThree()
   const yawRef = useRef(0)
   const pitchRef = useRef(0)
@@ -159,25 +166,25 @@ const DebugCameraProbe = ({ focusDistance, controlMode, turnDirection, onSnapsho
     }
 
     if (controlMode === 'fly') {
-      euler.set(pitchRef.current, yawRef.current, 0)
+      euler.set(pitchRef.current, yawRef.current, rollDirection * 0.55)
       camera.quaternion.setFromEuler(euler)
 
       movementVector.set(0, 0, 0)
 
       if (keyState.current.forward) {
-        movementVector.z -= 1
-      }
-
-      if (keyState.current.backward) {
         movementVector.z += 1
       }
 
+      if (keyState.current.backward) {
+        movementVector.z -= 1
+      }
+
       if (keyState.current.right) {
-        movementVector.x += 1
+        movementVector.x -= 1
       }
 
       if (keyState.current.left) {
-        movementVector.x -= 1
+        movementVector.x += 1
       }
 
       if (keyState.current.up) {
@@ -254,7 +261,9 @@ export const DebugExplorer = ({ content, onSceneReady }: DebugExplorerProps) => 
   const [focusDistance, setFocusDistance] = useState(100)
   const [controlMode, setControlMode] = useState<'fly' | 'orbit'>('fly')
   const [turnDirection, setTurnDirection] = useState(0)
+  const [rollDirection, setRollDirection] = useState(0)
   const turnState = useRef({ left: false, right: false })
+  const rollState = useRef({ left: false, right: false })
   const [snapshot, setSnapshot] = useState<CameraSnapshot>({
     position: initialDebugPosition,
     lookAt: initialDebugLookAt,
@@ -276,6 +285,16 @@ export const DebugExplorer = ({ content, onSceneReady }: DebugExplorerProps) => 
       setTurnDirection(nextDirection)
     }
 
+    const syncRollDirection = () => {
+      const nextDirection = rollState.current.left === rollState.current.right
+        ? 0
+        : rollState.current.left
+          ? 1
+          : -1
+
+      setRollDirection(nextDirection)
+    }
+
     const onKeyDown = (event: KeyboardEvent) => {
       const key = event.key.toLowerCase()
 
@@ -292,6 +311,16 @@ export const DebugExplorer = ({ content, onSceneReady }: DebugExplorerProps) => 
         turnState.current.right = true
         syncTurnDirection()
       }
+
+      if (key === 'z') {
+        rollState.current.left = true
+        syncRollDirection()
+      }
+
+      if (key === 'c') {
+        rollState.current.right = true
+        syncRollDirection()
+      }
     }
 
     const onKeyUp = (event: KeyboardEvent) => {
@@ -305,6 +334,16 @@ export const DebugExplorer = ({ content, onSceneReady }: DebugExplorerProps) => 
       if (key === 'e') {
         turnState.current.right = false
         syncTurnDirection()
+      }
+
+      if (key === 'z') {
+        rollState.current.left = false
+        syncRollDirection()
+      }
+
+      if (key === 'c') {
+        rollState.current.right = false
+        syncRollDirection()
       }
     }
 
@@ -331,6 +370,7 @@ export const DebugExplorer = ({ content, onSceneReady }: DebugExplorerProps) => 
               focusDistance={focusDistance}
               controlMode={controlMode}
               turnDirection={turnDirection}
+              rollDirection={rollDirection}
               onSnapshot={setSnapshot}
             />
             <CampusModel
@@ -361,7 +401,7 @@ export const DebugExplorer = ({ content, onSceneReady }: DebugExplorerProps) => 
         <p className="debug-kicker">SSC Atlas Debug Explorer</p>
         <h1>Camera Inspector</h1>
         <p className="debug-copy">
-          Fly: click and drag to look, move with WASD/R/F, turn with Q/E. Press M to switch mode. FOV is locked to 40.
+          Fly: drag to look, move with WASD/R/F, turn with Q/E, bank with Z/C. Press M to switch mode. FOV is locked to 40.
         </p>
 
         <div className="debug-controls">
