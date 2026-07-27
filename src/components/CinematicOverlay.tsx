@@ -51,33 +51,69 @@ export const CinematicOverlay = ({ content, progress, loading }: CinematicOverla
         {(chapter.kind === 'chapter' || chapter.kind === 'reveal') && (
           <button
             type="button"
-            className="details-toggle"
+            className={`details-toggle ${expanded ? 'active' : ''}`}
             onClick={() => setExpanded((state) => !state)}
             aria-expanded={expanded}
           >
-            {expanded ? 'Hide Architectural Notes' : 'Show Architectural Notes'}
+            <span className="details-toggle-icon" aria-hidden="true">
+              <span className="book-icon">📖</span>
+              <span className="bulb-icon">💡</span>
+            </span>
+            {expanded ? 'Close Architectural Notes' : 'Open Architectural Notes'}
           </button>
         )}
 
-        <div className={`details-panel ${expanded ? 'expanded' : ''}`}>
-          {focusedProfiles.length > 0 ? (
-            <div className="heritage-notes">
-              {focusedProfiles.map((profile) => (
-                <article key={profile.id} className="heritage-note">
-                  <h4>{profile.name}</h4>
-                  <p className="meta">
-                    {profile.year} - {profile.grade}
-                  </p>
-                  <p>{profile.narrative}</p>
-                </article>
-              ))}
+        <div className={`details-panel ${expanded ? 'expanded' : ''}`} role="dialog" aria-modal="true" aria-label="Architectural notes">
+          <button
+            type="button"
+            className="details-panel-backdrop"
+            onClick={() => setExpanded(false)}
+            aria-label="Close architectural notes"
+          />
+
+          <div className="details-panel-sheet">
+            <div className="details-panel-header">
+              <div className="details-panel-heading">
+                <p className="eyebrow">Architectural notes</p>
+                <h2>Important context for this chapter</h2>
+              </div>
+              <button type="button" className="details-close" onClick={() => setExpanded(false)}>
+                Close
+              </button>
             </div>
-          ) : (
-            <p>
-              Chapter pacing is driven by a single scroll timeline and references one master campus
-              model. Replace content JSON and model assets to update the narrative.
-            </p>
-          )}
+
+            <div className="details-panel-body">
+              <div className="notes-intro">
+                <div className="notes-badge" aria-hidden="true">
+                  <span>📖</span>
+                  <span>💡</span>
+                </div>
+                <p>
+                  These notes are treated like a cherished reference book—quietly important,
+                  beautifully framed, and worth pausing for.
+                </p>
+              </div>
+
+              {focusedProfiles.length > 0 ? (
+                <div className="heritage-notes">
+                  {focusedProfiles.map((profile) => (
+                    <article key={profile.id} className="heritage-note">
+                      <h4>{profile.name}</h4>
+                      <p className="meta">
+                        {profile.year} - {profile.grade}
+                      </p>
+                      <p>{profile.narrative}</p>
+                    </article>
+                  ))}
+                </div>
+              ) : (
+                <p className="notes-empty">
+                  Chapter pacing is driven by a single scroll timeline and references one master campus
+                  model. Replace content JSON and model assets to update the narrative.
+                </p>
+              )}
+            </div>
+          </div>
         </div>
       </aside>
 
