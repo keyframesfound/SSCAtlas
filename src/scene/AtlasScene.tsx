@@ -1,7 +1,7 @@
 import { Suspense } from 'react'
 import * as THREE from 'three'
 import { Canvas } from '@react-three/fiber'
-import { ContactShadows, Float, Sparkles } from '@react-three/drei'
+import { Float, Sparkles } from '@react-three/drei'
 import { OpeningContours } from './OpeningContours'
 import { CampusModel } from './CampusModel'
 import { CampusBoundary } from './CampusBoundary'
@@ -25,7 +25,6 @@ export const AtlasScene = ({ content, progress, onSceneReady }: AtlasSceneProps)
   return (
     <Canvas
       dpr={[1, 2]}
-      shadows
       camera={{ position: [0, 340, 580], fov: 34, near: 0.1, far: 2200 }}
       gl={{
         antialias: true,
@@ -48,16 +47,6 @@ export const AtlasScene = ({ content, progress, onSceneReady }: AtlasSceneProps)
           />
           <CampusBoundary points={content.statistics.boundaryPoints} progress={progress} />
         </group>
-
-        {/* Tight, crisp contact shadows — reads as clean ground-contact AO, not a soft glow */}
-        <ContactShadows
-          position={[0, -0.02, 0]}
-          opacity={0.4}
-          scale={220}
-          blur={1.2}
-          far={220}
-          resolution={1024}
-        />
 
         <Float speed={0.6} rotationIntensity={0.08} floatIntensity={0.18}>
           <Sparkles
