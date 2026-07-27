@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useGLTF } from '@react-three/drei'
-import { Group } from 'three'
+import { Group, MeshBasicMaterial, MeshStandardMaterial } from 'three'
 import type { BuildingDefinition, StatisticsContent } from '../types/content'
 
 type CampusModelProps = {
@@ -20,6 +20,28 @@ const ModelAsset = ({ modelUrl, onReady }: ModelAssetProps) => {
   useEffect(() => {
     onReady()
   }, [onReady])
+
+  useEffect(() => {
+    gltf.scene.traverse((object) => {
+      if (object.isMesh) {
+        object.material = Array.isArray(object.material)
+          ? object.material.map((material) => {
+              const nextMaterial = material.clone()
+              nextMaterial.transparent = false
+              nextMaterial.opacity = 1
+              nextMaterial.color.set('#f5f7fb')
+              return nextMaterial
+            })
+          : (() => {
+              const nextMaterial = object.material.clone()
+              nextMaterial.transparent = false
+              nextMaterial.opacity = 1
+              nextMaterial.color.set('#f5f7fb')
+              return nextMaterial
+            })()
+      }
+    })
+  }, [gltf.scene])
 
   return <primitive object={gltf.scene} />
 }
