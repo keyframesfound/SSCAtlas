@@ -1,8 +1,7 @@
 import { Suspense } from 'react'
 import * as THREE from 'three'
 import { Canvas } from '@react-three/fiber'
-import { ContactShadows, Environment, Float, Sky, Sparkles } from '@react-three/drei'
-import { EffectComposer, Bloom, Vignette } from '@react-three/postprocessing'
+import { ContactShadows, Environment, Float, Sparkles } from '@react-three/drei'
 import { OpeningContours } from './OpeningContours'
 import { CampusModel } from './CampusModel'
 import { CampusBoundary } from './CampusBoundary'
@@ -16,100 +15,45 @@ type AtlasSceneProps = {
   onSceneReady: (ready: boolean) => void
 }
 
-// Linear interpolation helper for lighting values
-const lerp = (a: number, b: number, t: number): number => a + (b - a) * t
-
-// Linear interpolation between two hex color strings
-const lerpColor = (colorA: string, colorB: string, t: number): string => {
-  const c1 = new THREE.Color(colorA)
-  const c2 = new THREE.Color(colorB)
-  return c1.lerp(c2, t).getStyle()
-}
-
-const Atmosphere = ({ progress }: { progress: number }) => {
-  // reveal: 0 during intro, 1 once the camera has settled on the campus.
-  // Drives the transition from "golden hour reveal" to "midday architectural" lighting.
-  const reveal = smoothstep(0.15, 0.55, progress)
-  const sunsetMix = smoothstep(0.12, 0.95, progress)
-
-  // --- Golden hour reveal mode (progress ~0) ---
-  const revealSunY = 3
-  const revealKeyColor = '#ffffff'
-  const revealKeyIntensity = 3
-  const revealFillColor = '#4a6fa5'
-  const revealFillIntensity = 0.35
-  const revealAmbientColor = '#3d4a6b'
-  const revealAmbientIntensity = 0.12
-
-  // --- Midday architectural mode (progress ~1) ---
-  const archSunY = 25
-  const archKeyColor = '#fff1de'
-  const archKeyIntensity = 1.4
-  const archFillColor = '#c9d6e8'
-  const archFillIntensity = 0.5
-  const archAmbientColor = '#dfe6f0'
-  const archAmbientIntensity = 0.25
-
-  // Interpolated values driving the actual lights
-  const sunY = lerp(revealSunY, archSunY, reveal)
-  const keyColor = lerpColor(revealKeyColor, archKeyColor, reveal)
-  const keyIntensity = lerp(revealKeyIntensity, archKeyIntensity, reveal)
-  const fillColor = lerpColor(revealFillColor, archFillColor, reveal)
-  const fillIntensity = lerp(revealFillIntensity, archFillIntensity, reveal)
-  const ambientColor = lerpColor(revealAmbientColor, archAmbientColor, reveal)
-  const ambientIntensity = lerp(revealAmbientIntensity, archAmbientIntensity, reveal)
-
-  // Environment preset swaps once we're mostly settled into architectural mode
-  const envPreset = reveal > 0.5 ? 'city' : 'sunset'
-
+// Studio / Google-Maps-style lighting: flat, neutral, even illumination.
+// No single dominant sun direction — multiple soft lights cancel out harsh shadows
+// so building forms read clearly from every angle instead of being lit dramatically.
+const Atmosphere = () => {
   return (
     <>
-      <Sky
-        distance={1000}
-        sunPosition={[8 + sunsetMix * 18, sunY, -24]}
-        inclination={0.5}
-        azimuth={0.2}
-        rayleigh={lerp(1.4, 0.9, reveal)}
-        turbidity={lerp(9, 6, reveal)}
-        mieCoefficient={lerp(0.015, 0.008, reveal)}
-        mieDirectionalG={0.85}
-      />
+      {/* Soft, near-white sky dome instead of a dramatic sunset sky */}
+      <color attach="background" args={['#eef1f5']} />
 
-      {/* Atmospheric haze — fades out as we move into architectural mode so distant buildings stay legible */}
-      <fog attach="fog" args={['#e8935f', lerp(200, 400, reveal), lerp(1400, 2000, reveal)]} />
-
-      {/* Key light — warm gold during reveal, neutral-warm white for architecture */}
+      {/* Primary overhead light — soft shadows, neutral white, moderate intensity */}
       <directionalLight
         castShadow
-        intensity={keyIntensity}
-        color={keyColor}
-        position={[lerp(120, 100, reveal), lerp(60, 140, reveal), lerp(-40, -60, reveal)]}
+        intensity={0.9}
+        color="#ffffff"
+        position={[80, 160, 60]}
         shadow-mapSize-width={2048}
         shadow-mapSize-height={2048}
         shadow-camera-near={0.5}
         shadow-camera-far={600}
-        shadow-bias={-0.0005}
+        shadow-bias={-0.0004}
       />
 
-      {/* Fill/rim light — cool blue reveal, soft sky-blue fill for architecture (keeps shadow sides readable) */}
-      <directionalLight
-        intensity={fillIntensity}
-        color={fillColor}
-        position={[lerp(-80, -100, reveal), lerp(40, 80, reveal), lerp(100, 80, reveal)]}
-      />
+      {/* Secondary fill from the opposite side — keeps shadow sides of buildings readable, not black */}
+      <directionalLight intensity={0.55} color="#f4f6fa" position={[-90, 120, -40]} />
 
-      <ambientLight intensity={ambientIntensity} color={ambientColor} />
+      {/* Fill from the front, low intensity — evens out remaining contrast */}
+      <directionalLight intensity={0.35} color="#ffffff" position={[0, 60, 140]} />
 
-      <Environment preset={envPreset} background={false} />
+      {/* High ambient — this is the biggest lever for the "flat map" look */}
+      <ambientLight intensity={0.55} color="#ffffff" />
+
+      {/* Neutral studio HDRI for reflections — no colored sky bounce, just clean highlights */}
+      <Environment preset="studio" background={false} />
     </>
   )
 }
 
 export const AtlasScene = ({ content, progress, onSceneReady }: AtlasSceneProps) => {
-  const sparklesOpacity = 0.08 + smoothstep(0.2, 0.9, progress) * 0.12
-  // Sparkles are an intro flourish — fade them out once we're in architectural mode
-  const architecturalReveal = smoothstep(0.15, 0.55, progress)
-  const finalSparklesOpacity = sparklesOpacity * (1 - architecturalReveal)
+  const sparklesOpacity = 0.05 + smoothstep(0.2, 0.9, progress) * 0.05
 
   return (
     <Canvas
@@ -120,11 +64,11 @@ export const AtlasScene = ({ content, progress, onSceneReady }: AtlasSceneProps)
         antialias: true,
         powerPreference: 'high-performance',
         toneMapping: THREE.ACESFilmicToneMapping,
-        toneMappingExposure: 1.1,
+        toneMappingExposure: 1.0,
       }}
     >
       <Suspense fallback={null}>
-        <Atmosphere progress={progress} />
+        <Atmosphere />
         <CameraDirector content={content} progress={progress} />
 
         <OpeningContours progress={progress} />
@@ -138,30 +82,26 @@ export const AtlasScene = ({ content, progress, onSceneReady }: AtlasSceneProps)
           <CampusBoundary points={content.statistics.boundaryPoints} progress={progress} />
         </group>
 
+        {/* Tight, crisp contact shadows — reads as clean ground-contact AO, not a soft glow */}
         <ContactShadows
           position={[0, -0.02, 0]}
-          opacity={0.35}
+          opacity={0.4}
           scale={220}
-          blur={1.5}
+          blur={1.2}
           far={220}
           resolution={1024}
         />
 
         <Float speed={0.6} rotationIntensity={0.08} floatIntensity={0.18}>
           <Sparkles
-            count={140}
+            count={80}
             scale={[240, 80, 240]}
-            size={0.85}
+            size={0.6}
             speed={0.1}
-            opacity={finalSparklesOpacity}
-            color="#e9eef8"
+            opacity={sparklesOpacity}
+            color="#ffffff"
           />
         </Float>
-
-        <EffectComposer>
-          <Bloom intensity={0.4} luminanceThreshold={0.6} luminanceSmoothing={0.9} />
-          <Vignette eskil={false} offset={0.15} darkness={0.6} />
-        </EffectComposer>
       </Suspense>
     </Canvas>
   )
