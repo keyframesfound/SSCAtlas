@@ -2,7 +2,6 @@ import { Suspense } from 'react'
 import { Canvas } from '@react-three/fiber'
 import { OpeningContours } from './OpeningContours'
 import { CampusModel } from './CampusModel'
-import { CampusBoundary } from './CampusBoundary'
 import { CameraDirector } from './CameraDirector'
 import type { AtlasContent } from '../types/content'
 
@@ -33,7 +32,6 @@ export const AtlasScene = ({ content, progress, onSceneReady }: AtlasSceneProps)
             buildings={content.buildings}
             onModelReady={() => onSceneReady(true)}
           />
-          <CampusBoundary points={content.statistics.boundaryPoints} progress={progress} />
         </group>
       </Suspense>
     </Canvas>

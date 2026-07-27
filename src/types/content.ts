@@ -42,7 +42,6 @@ export type StatisticsContent = {
   subline: string
   finalTitle: string
   finalSubtitle: string
-  boundaryPoints: Vec3Tuple[]
   model: {
     url: string
     objectRoot: string
