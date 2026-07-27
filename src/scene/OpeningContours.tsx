@@ -1,3 +1,7 @@
+import { useMemo, type ReactElement } from 'react'
+import { Line } from '@react-three/drei'
+import { smoothstep } from '../lib/math'
+
 type OpeningContoursProps = {
   progress: number
 }
