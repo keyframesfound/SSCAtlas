@@ -1,5 +1,5 @@
 import { useFrame, useThree } from '@react-three/fiber'
-import { MathUtils, PerspectiveCamera, Vector3 } from 'three'
+import { PerspectiveCamera, Vector3 } from 'three'
 import { chapterAtProgress, chapterProgress, sampleCameraPath } from '../lib/timeline'
 import type { AtlasContent } from '../types/content'
 
