@@ -427,10 +427,10 @@ body {
   inset: 0;
   display: flex;
   flex-direction: column;
-  padding: clamp(1.2rem, 2.4vw, 2rem);
+  padding: clamp(2rem, 4vw, 3rem);
   border: 0;
   border-radius: 0;
-  background: linear-gradient(145deg, rgba(12, 16, 24, 0.98), rgba(7, 9, 14, 0.95));
+  background: rgba(11, 13, 18, 0.96);
   box-shadow: none;
   transform: translateY(24px) scale(0.98);
   opacity: 0;
