@@ -37,9 +37,9 @@ const getBuildingAnchor = (building: BuildingDefinition, index: number): [number
 const PlaceholderCampus = ({ buildings }: { buildings: BuildingDefinition[] }) => {
   return (
     <group name="SSC_Campus">
-      <mesh rotation-x={-Math.PI / 2} receiveShadow>
+      <mesh rotation-x={-Math.PI / 2}>
         <circleGeometry args={[80, 64]} />
-        <meshStandardMaterial color="#101418" roughness={0.95} metalness={0.05} />
+        <meshBasicMaterial color="#101418" />
       </mesh>
 
       {buildings.map((building, index) => {
@@ -47,9 +47,9 @@ const PlaceholderCampus = ({ buildings }: { buildings: BuildingDefinition[] }) =
 
         return (
           <group key={building.id} name={building.id} position={[x, y, z]}>
-            <mesh castShadow receiveShadow>
+            <mesh>
               <boxGeometry args={[6, 5.5, 6]} />
-              <meshStandardMaterial color="#182032" roughness={0.72} metalness={0.18} />
+              <meshBasicMaterial color="#182032" />
             </mesh>
           </group>
         )
