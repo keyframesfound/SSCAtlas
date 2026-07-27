@@ -16,6 +16,39 @@ type ModelAssetProps = {
 
 const VEGETATION_MODEL_URL = '/assets/models/vegetation.glb'
 
+const applyCampusStyleMaterials = (scene: Group) => {
+  scene.traverse((object) => {
+    if (!(object instanceof Mesh)) return
+
+    const sourceMaterial = object.material as any
+    const materials = Array.isArray(sourceMaterial) ? sourceMaterial : [sourceMaterial]
+    const nextMaterials = materials.map((material: any) => {
+      const nextMaterial = new MeshBasicMaterial({
+        color: '#f5f7fb',
+        transparent: false,
+        opacity: 1,
+      })
+
+      if (material?.color) {
+        nextMaterial.color.copy(material.color)
+      }
+
+      if (material?.map) {
+        nextMaterial.map = material.map
+      }
+
+      if (material?.alphaMap) {
+        nextMaterial.alphaMap = material.alphaMap
+      }
+
+      nextMaterial.side = material?.side ?? nextMaterial.side
+      return nextMaterial
+    })
+
+    object.material = Array.isArray(sourceMaterial) ? nextMaterials : nextMaterials[0]
+  })
+}
+
 const ModelAsset = ({ modelUrl, onReady }: ModelAssetProps) => {
   const gltf = useGLTF(modelUrl)
 
@@ -24,36 +57,7 @@ const ModelAsset = ({ modelUrl, onReady }: ModelAssetProps) => {
   }, [onReady])
 
   useEffect(() => {
-    gltf.scene.traverse((object) => {
-      if (!(object instanceof Mesh)) return
-
-      const sourceMaterial = object.material as any
-      const materials = Array.isArray(sourceMaterial) ? sourceMaterial : [sourceMaterial]
-      const nextMaterials = materials.map((material: any) => {
-        const nextMaterial = new MeshBasicMaterial({
-          color: '#f5f7fb',
-          transparent: false,
-          opacity: 1,
-        })
-
-        if (material?.color) {
-          nextMaterial.color.copy(material.color)
-        }
-
-        if (material?.map) {
-          nextMaterial.map = material.map
-        }
-
-        if (material?.alphaMap) {
-          nextMaterial.alphaMap = material.alphaMap
-        }
-
-        nextMaterial.side = material?.side ?? nextMaterial.side
-        return nextMaterial
-      })
-
-      object.material = Array.isArray(sourceMaterial) ? nextMaterials : nextMaterials[0]
-    })
+    applyCampusStyleMaterials(gltf.scene)
   }, [gltf.scene])
 
   return <primitive object={gltf.scene} />
@@ -71,6 +75,11 @@ const getBuildingAnchor = (building: BuildingDefinition, index: number): [number
 
 const OptionalVegetation = ({ modelUrl }: { modelUrl: string }) => {
   const gltf = useGLTF(modelUrl)
+
+  useEffect(() => {
+    applyCampusStyleMaterials(gltf.scene)
+  }, [gltf.scene])
+
   return <primitive object={gltf.scene} />
 }
 
