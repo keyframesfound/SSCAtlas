@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { chapterAtProgress } from '../lib/timeline'
 import { smoothstep } from '../lib/math'
 import type { AtlasContent } from '../types/content'
@@ -29,6 +29,21 @@ export const CinematicOverlay = ({ content, progress, loading }: CinematicOverla
   const openingVisible = progress < 0.08
   const finalVisible = chapter.kind === 'finale'
 
+  useEffect(() => {
+    const previousOverflow = document.body.style.overflow
+    const previousHtmlOverflow = document.documentElement.style.overflow
+
+    if (expanded) {
+      document.body.style.overflow = 'hidden'
+      document.documentElement.style.overflow = 'hidden'
+    }
+
+    return () => {
+      document.body.style.overflow = previousOverflow
+      document.documentElement.style.overflow = previousHtmlOverflow
+    }
+  }, [expanded])
+
   return (
     <>
       <div className={`overlay-loading ${loading ? 'visible' : ''}`}>
@@ -57,7 +72,6 @@ export const CinematicOverlay = ({ content, progress, loading }: CinematicOverla
           >
             <span className="details-toggle-icon" aria-hidden="true">
               <span className="book-icon">📖</span>
-              <span className="bulb-icon">💡</span>
             </span>
             {expanded ? 'Close Architectural Notes' : 'Open Architectural Notes'}
           </button>
@@ -86,7 +100,6 @@ export const CinematicOverlay = ({ content, progress, loading }: CinematicOverla
               <div className="notes-intro">
                 <div className="notes-badge" aria-hidden="true">
                   <span>📖</span>
-                  <span>💡</span>
                 </div>
                 <p>
                   These notes are treated like a cherished reference book—quietly important,
