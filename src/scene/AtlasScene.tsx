@@ -64,7 +64,7 @@ export const AtlasScene = ({ content, progress, onSceneReady }: AtlasSceneProps)
         antialias: true,
         powerPreference: 'high-performance',
         toneMapping: THREE.ACESFilmicToneMapping,
-        toneMappingExposure: 1.0,
+        toneMappingExposure: 0.7,
       }}
     >
       <Suspense fallback={null}>
