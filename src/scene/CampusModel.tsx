@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useGLTF } from '@react-three/drei'
-import { Group, MeshBasicMaterial, MeshStandardMaterial } from 'three'
+import { Group, Mesh, MeshBasicMaterial } from 'three'
 import type { BuildingDefinition, StatisticsContent } from '../types/content'
 
 type CampusModelProps = {
@@ -23,23 +23,34 @@ const ModelAsset = ({ modelUrl, onReady }: ModelAssetProps) => {
 
   useEffect(() => {
     gltf.scene.traverse((object) => {
-      if (object.isMesh) {
-        object.material = Array.isArray(object.material)
-          ? object.material.map((material) => {
-              const nextMaterial = material.clone()
-              nextMaterial.transparent = false
-              nextMaterial.opacity = 1
-              nextMaterial.color.set('#f5f7fb')
-              return nextMaterial
-            })
-          : (() => {
-              const nextMaterial = object.material.clone()
-              nextMaterial.transparent = false
-              nextMaterial.opacity = 1
-              nextMaterial.color.set('#f5f7fb')
-              return nextMaterial
-            })()
-      }
+      if (!(object instanceof Mesh)) return
+
+      const sourceMaterial = object.material as any
+      const materials = Array.isArray(sourceMaterial) ? sourceMaterial : [sourceMaterial]
+      const nextMaterials = materials.map((material: any) => {
+        const nextMaterial = new MeshBasicMaterial({
+          color: '#f5f7fb',
+          transparent: false,
+          opacity: 1,
+        })
+
+        if (material?.color) {
+          nextMaterial.color.copy(material.color)
+        }
+
+        if (material?.map) {
+          nextMaterial.map = material.map
+        }
+
+        if (material?.alphaMap) {
+          nextMaterial.alphaMap = material.alphaMap
+        }
+
+        nextMaterial.side = material?.side ?? nextMaterial.side
+        return nextMaterial
+      })
+
+      object.material = Array.isArray(sourceMaterial) ? nextMaterials : nextMaterials[0]
     })
   }, [gltf.scene])
 
