@@ -38,13 +38,13 @@ const Atmosphere = () => {
       />
 
       {/* Secondary fill from the opposite side — keeps shadow sides of buildings readable, not black */}
-      <directionalLight intensity={0.3} color="#f4f6fa" position={[-90, 120, -40]} />
+      <directionalLight intensity={0.2} color="#f4f6fa" position={[-90, 120, -40]} />
 
       {/* Fill from the front, low intensity — evens out remaining contrast */}
-      <directionalLight intensity={0.3} color="#ffffff" position={[0, 60, 140]} />
+      <directionalLight intensity={0.1} color="#ffffff" position={[0, 60, 140]} />
 
       {/* High ambient — this is the biggest lever for the "flat map" look */}
-      <ambientLight intensity={0.5} color="#ffffff" />
+      <ambientLight intensity={0.3} color="#ffffff" />
 
       {/* Neutral studio HDRI for reflections — no colored sky bounce, just clean highlights */}
       <Environment preset="studio" background={false} />
