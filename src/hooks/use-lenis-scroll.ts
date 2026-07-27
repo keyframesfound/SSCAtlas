@@ -9,7 +9,7 @@ export const useLenisScroll = (): number => {
     const lenis = new Lenis({
       smoothWheel: true,
       lerp: 0.05,
-      wheelMultiplier: 0.5,
+      wheelMultiplier: 0.45,
       touchMultiplier: 0.8,
     })
 
