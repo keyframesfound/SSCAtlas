@@ -14,6 +14,8 @@ type ModelAssetProps = {
   onReady: () => void
 }
 
+const VEGETATION_MODEL_URL = '/assets/models/vegetation.glb'
+
 const ModelAsset = ({ modelUrl, onReady }: ModelAssetProps) => {
   const gltf = useGLTF(modelUrl)
 
@@ -67,6 +69,11 @@ const getBuildingAnchor = (building: BuildingDefinition, index: number): [number
   return building.position ?? getFallbackAnchor(index)
 }
 
+const OptionalVegetation = ({ modelUrl }: { modelUrl: string }) => {
+  const gltf = useGLTF(modelUrl)
+  return <primitive object={gltf.scene} />
+}
+
 const PlaceholderCampus = ({ buildings }: { buildings: BuildingDefinition[] }) => {
   return (
     <group name="SSC_Campus">
@@ -93,6 +100,7 @@ const PlaceholderCampus = ({ buildings }: { buildings: BuildingDefinition[] }) =
 
 export const CampusModel = ({ stats, buildings, onModelReady }: CampusModelProps) => {
   const [modelState, setModelState] = useState<'checking' | 'available' | 'missing'>('checking')
+  const [vegetationState, setVegetationState] = useState<'checking' | 'available' | 'missing'>('checking')
 
   useEffect(() => {
     let active = true
@@ -113,6 +121,26 @@ export const CampusModel = ({ stats, buildings, onModelReady }: CampusModelProps
       active = false
     }
   }, [stats.model.url])
+
+  useEffect(() => {
+    let active = true
+
+    fetch(VEGETATION_MODEL_URL, { method: 'HEAD' })
+      .then((response) => {
+        if (active) {
+          setVegetationState(response.ok ? 'available' : 'missing')
+        }
+      })
+      .catch(() => {
+        if (active) {
+          setVegetationState('missing')
+        }
+      })
+
+    return () => {
+      active = false
+    }
+  }, [])
 
   useEffect(() => {
     if (modelState === 'missing') {
@@ -142,6 +170,8 @@ export const CampusModel = ({ stats, buildings, onModelReady }: CampusModelProps
       ) : modelState === 'missing' ? (
         <PlaceholderCampus buildings={buildings} />
       ) : null}
+
+      {vegetationState === 'available' ? <OptionalVegetation modelUrl={VEGETATION_MODEL_URL} /> : null}
 
       <primitive object={namedMarkers} visible={false} />
 
