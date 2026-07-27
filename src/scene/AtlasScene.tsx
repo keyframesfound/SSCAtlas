@@ -16,7 +16,7 @@ type AtlasSceneProps = {
 }
 
 const Atmosphere = () => {
-  return <color attach="background" args={['#eef1f5']} />
+  return <color attach="background" args={['#f5f7fb']} />
 }
 
 export const AtlasScene = ({ content, progress, onSceneReady }: AtlasSceneProps) => {

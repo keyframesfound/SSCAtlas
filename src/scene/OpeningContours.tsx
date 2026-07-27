@@ -219,7 +219,6 @@ export const OpeningContours = ({ progress }: OpeningContoursProps) => {
   }, [])
 
   const reveal = smoothstep(0.01, 0.11, progress)
-  const opacity = 1 - smoothstep(0.08, 0.19, progress)
 
   return (
     <group position={[0, -8 + reveal * 8, 0]} scale={[1.45, 1.45, 1.45]}>
@@ -227,9 +226,9 @@ export const OpeningContours = ({ progress }: OpeningContoursProps) => {
         <Line
           key={`contour-${idx}`}
           points={points}
-          color="#f5f7fa"
-          transparent
-          opacity={opacity * (0.28 + idx * 0.02)}
+          color="#111827"
+          transparent={false}
+          opacity={1}
           lineWidth={1.05}
         />
       ))}

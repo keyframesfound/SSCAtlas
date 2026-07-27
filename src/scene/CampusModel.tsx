@@ -39,7 +39,7 @@ const PlaceholderCampus = ({ buildings }: { buildings: BuildingDefinition[] }) =
     <group name="SSC_Campus">
       <mesh rotation-x={-Math.PI / 2}>
         <circleGeometry args={[80, 64]} />
-        <meshBasicMaterial color="#101418" />
+        <meshBasicMaterial color="#f4f6f9" />
       </mesh>
 
       {buildings.map((building, index) => {
@@ -49,7 +49,7 @@ const PlaceholderCampus = ({ buildings }: { buildings: BuildingDefinition[] }) =
           <group key={building.id} name={building.id} position={[x, y, z]}>
             <mesh>
               <boxGeometry args={[6, 5.5, 6]} />
-              <meshBasicMaterial color="#182032" />
+              <meshBasicMaterial color="#dfe5ef" />
             </mesh>
           </group>
         )
