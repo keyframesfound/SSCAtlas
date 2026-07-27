@@ -1,6 +1,5 @@
 import { useMemo } from 'react'
 import { Line } from '@react-three/drei'
-import { smoothstep } from '../lib/math'
 import type { Vec3Tuple } from '../types/content'
 
 type CampusBoundaryProps = {
@@ -8,30 +7,25 @@ type CampusBoundaryProps = {
   progress: number
 }
 
-export const CampusBoundary = ({ points, progress }: CampusBoundaryProps) => {
-  const revealProgress = smoothstep(0.07, 0.16, progress)
-  const fade = 1 - smoothstep(0.15, 0.24, progress)
-
+export const CampusBoundary = ({ points }: CampusBoundaryProps) => {
   const activePoints = useMemo(() => {
-    const count = Math.max(2, Math.floor(points.length * revealProgress))
-    return points.slice(0, count)
-  }, [points, revealProgress])
+    if (points.length < 2) {
+      return points
+    }
+
+    return [...points, points[0]]
+  }, [points])
 
   return (
     <group>
       <Line
         points={activePoints}
-        color="#9db8ff"
-        transparent
-        opacity={0.85 * fade}
-        lineWidth={10}
-      />
-      <Line
-        points={activePoints}
-        color="#e8eef8"
-        transparent
-        opacity={0.4 * fade}
-        lineWidth={10}
+        color="#7da2ff"
+        transparent={false}
+        opacity={1}
+        lineWidth={2}
+        depthTest={false}
+        depthWrite={false}
       />
     </group>
   )
