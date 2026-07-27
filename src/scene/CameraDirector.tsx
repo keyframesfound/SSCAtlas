@@ -22,11 +22,12 @@ export const CameraDirector = ({ content, progress }: CameraDirectorProps) => {
     tempPosition.set(...sample.position)
     tempLookAt.set(...sample.lookAt)
 
-    camera.position.lerp(tempPosition, 0.08)
+    camera.position.copy(tempPosition)
+    camera.up.set(0, 1, 0)
     camera.lookAt(tempLookAt)
 
     if (camera instanceof PerspectiveCamera) {
-      camera.fov = MathUtils.lerp(camera.fov, sample.fov, 0.08)
+      camera.fov = sample.fov
       camera.updateProjectionMatrix()
     }
   })
