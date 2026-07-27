@@ -1,7 +1,6 @@
 import { Suspense } from 'react'
 import { Canvas } from '@react-three/fiber'
 import { ContactShadows, Environment, Float, Sky, Sparkles } from '@react-three/drei'
-import { OpeningContours } from './OpeningContours'
 import { CampusModel } from './CampusModel'
 import { CampusBoundary } from './CampusBoundary'
 import { CameraDirector } from './CameraDirector'
@@ -59,8 +58,6 @@ export const AtlasScene = ({ content, progress, onSceneReady }: AtlasSceneProps)
       <Suspense fallback={null}>
         <Atmosphere progress={progress} />
         <CameraDirector content={content} progress={progress} />
-
-        <OpeningContours progress={progress} />
 
         <group>
           <CampusModel
