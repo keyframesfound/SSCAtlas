@@ -24,14 +24,14 @@ export const CampusBoundary = ({ points, progress }: CampusBoundaryProps) => {
         color="#9db8ff"
         transparent
         opacity={0.85 * fade}
-        lineWidth={2}
+        lineWidth={10}
       />
       <Line
         points={activePoints}
         color="#e8eef8"
         transparent
         opacity={0.4 * fade}
-        lineWidth={5}
+        lineWidth={10}
       />
     </group>
   )
