@@ -1,6 +1,6 @@
 import { Suspense, useEffect, useMemo, useRef, useState } from 'react'
 import { Canvas, useFrame, useThree } from '@react-three/fiber'
-import { Environment, Grid, OrbitControls, Sky, Sparkles } from '@react-three/drei'
+import { Grid, OrbitControls, Sparkles } from '@react-three/drei'
 import { Euler, PerspectiveCamera, Vector3 } from 'three'
 import { CampusModel } from '../scene/CampusModel'
 import type { AtlasContent } from '../types/content'
@@ -227,30 +227,7 @@ const DebugCameraProbe = ({
 }
 
 const DebugEnvironment = () => {
-  return (
-    <>
-      <Sky
-        distance={1000}
-        sunPosition={[22, 14, -18]}
-        inclination={0.5}
-        azimuth={0.15}
-        rayleigh={0.7}
-        turbidity={8}
-        mieCoefficient={0.01}
-      />
-      <ambientLight intensity={0.25} color="#90a4be" />
-      <directionalLight
-        castShadow
-        intensity={1.3}
-        color="#f5d7aa"
-        position={[120, 130, 40]}
-        shadow-mapSize-width={2048}
-        shadow-mapSize-height={2048}
-      />
-      <Environment preset="sunset" background={false} />
-      <Sparkles count={80} scale={[320, 120, 320]} size={0.7} speed={0.08} opacity={0.08} />
-    </>
-  )
+  return <Sparkles count={80} scale={[320, 120, 320]} size={0.7} speed={0.08} opacity={0.08} />
 }
 
 const formatVector = (vector: [number, number, number]) => {

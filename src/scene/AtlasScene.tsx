@@ -1,7 +1,7 @@
 import { Suspense } from 'react'
 import * as THREE from 'three'
 import { Canvas } from '@react-three/fiber'
-import { ContactShadows, Environment, Float, Sparkles } from '@react-three/drei'
+import { ContactShadows, Float, Sparkles } from '@react-three/drei'
 import { OpeningContours } from './OpeningContours'
 import { CampusModel } from './CampusModel'
 import { CampusBoundary } from './CampusBoundary'
@@ -15,41 +15,8 @@ type AtlasSceneProps = {
   onSceneReady: (ready: boolean) => void
 }
 
-// Studio / Google-Maps-style lighting: flat, neutral, even illumination.
-// No single dominant sun direction — multiple soft lights cancel out harsh shadows
-// so building forms read clearly from every angle instead of being lit dramatically.
 const Atmosphere = () => {
-  return (
-    <>
-      {/* Soft, near-white sky dome instead of a dramatic sunset sky */}
-      <color attach="background" args={['#eef1f5']} />
-
-      {/* Primary overhead light — soft shadows, neutral white, moderate intensity */}
-      <directionalLight
-        castShadow
-        intensity={0.9}
-        color="#ffffff"
-        position={[80, 160, 60]}
-        shadow-mapSize-width={2048}
-        shadow-mapSize-height={2048}
-        shadow-camera-near={0.5}
-        shadow-camera-far={600}
-        shadow-bias={-0.0004}
-      />
-
-      {/* Secondary fill from the opposite side — keeps shadow sides of buildings readable, not black */}
-      <directionalLight intensity={0.2} color="#f4f6fa" position={[-90, 120, -40]} />
-
-      {/* Fill from the front, low intensity — evens out remaining contrast */}
-      <directionalLight intensity={0.1} color="#ffffff" position={[0, 60, 140]} />
-
-      {/* High ambient — this is the biggest lever for the "flat map" look */}
-      <ambientLight intensity={0.3} color="#ffffff" />
-
-      {/* Neutral studio HDRI for reflections — no colored sky bounce, just clean highlights */}
-      <Environment preset="studio" background={false} />
-    </>
-  )
+  return <color attach="background" args={['#eef1f5']} />
 }
 
 export const AtlasScene = ({ content, progress, onSceneReady }: AtlasSceneProps) => {
