@@ -222,15 +222,15 @@ export const OpeningContours = ({ progress }: OpeningContoursProps) => {
   const opacity = 1 - smoothstep(0.08, 0.19, progress)
 
   return (
-    <group position={[0, -8 + reveal * 8, 0]}>
+    <group position={[0, -8 + reveal * 8, 0]} scale={[1.45, 1.45, 1.45]}>
       {contours.map((points, idx): ReactElement => (
         <Line
           key={`contour-${idx}`}
           points={points}
-          color="#dfe3e8"
+          color="#f5f7fa"
           transparent
-          opacity={opacity * (0.2 + idx * 0.014)}
-          lineWidth={0.55}
+          opacity={opacity * (0.28 + idx * 0.02)}
+          lineWidth={1.05}
         />
       ))}
     </group>
