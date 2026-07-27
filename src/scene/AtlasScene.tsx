@@ -34,8 +34,8 @@ const Atmosphere = ({ progress }: { progress: number }) => {
 
   // --- Golden hour reveal mode (progress ~0) ---
   const revealSunY = 3
-  const revealKeyColor = '#ff9d5c'
-  const revealKeyIntensity = 1.6
+  const revealKeyColor = '#ffffff'
+  const revealKeyIntensity = 3
   const revealFillColor = '#4a6fa5'
   const revealFillIntensity = 0.35
   const revealAmbientColor = '#3d4a6b'
