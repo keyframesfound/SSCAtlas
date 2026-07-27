@@ -1,6 +1,9 @@
 import { Suspense } from 'react'
+import * as THREE from 'three'
 import { Canvas } from '@react-three/fiber'
 import { ContactShadows, Environment, Float, Sky, Sparkles } from '@react-three/drei'
+import { EffectComposer, Bloom, Vignette } from '@react-three/postprocessing'
+import { OpeningContours } from './OpeningContours'
 import { CampusModel } from './CampusModel'
 import { CampusBoundary } from './CampusBoundary'
 import { CameraDirector } from './CameraDirector'
@@ -20,25 +23,35 @@ const Atmosphere = ({ progress }: { progress: number }) => {
     <>
       <Sky
         distance={1000}
-        sunPosition={[8 + sunsetMix * 18, 6, -24]}
+        sunPosition={[8 + sunsetMix * 18, 3, -24]}
         inclination={0.5}
         azimuth={0.2}
-        rayleigh={0.8}
-        turbidity={8}
-        mieCoefficient={0.012}
+        rayleigh={1.4}
+        turbidity={9}
+        mieCoefficient={0.015}
+        mieDirectionalG={0.85}
       />
 
-      <ambientLight intensity={0.18} color="#8fa0bb" />
+      {/* Atmospheric haze — desaturates distant geometry, sells depth */}
+      <fog attach="fog" args={['#e8935f', 200, 1400]} />
+
+      {/* Warm key light, low angle for dramatic sunset shadows */}
       <directionalLight
         castShadow
-        intensity={1.45}
-        color="#f9d7a8"
-        position={[120, 130, 40]}
+        intensity={1.6}
+        color="#ff9d5c"
+        position={[120, 60, -40]}
         shadow-mapSize-width={2048}
         shadow-mapSize-height={2048}
         shadow-camera-near={0.5}
         shadow-camera-far={600}
+        shadow-bias={-0.0005}
       />
+
+      {/* Cool fill/rim light — keeps shadows from reading flat/grey */}
+      <directionalLight intensity={0.35} color="#4a6fa5" position={[-80, 40, 100]} />
+
+      <ambientLight intensity={0.12} color="#3d4a6b" />
 
       <Environment preset="sunset" background={false} />
     </>
@@ -53,11 +66,18 @@ export const AtlasScene = ({ content, progress, onSceneReady }: AtlasSceneProps)
       dpr={[1, 2]}
       shadows
       camera={{ position: [0, 340, 580], fov: 34, near: 0.1, far: 2200 }}
-      gl={{ antialias: true, powerPreference: 'high-performance' }}
+      gl={{
+        antialias: true,
+        powerPreference: 'high-performance',
+        toneMapping: THREE.ACESFilmicToneMapping,
+        toneMappingExposure: 1.1,
+      }}
     >
       <Suspense fallback={null}>
         <Atmosphere progress={progress} />
         <CameraDirector content={content} progress={progress} />
+
+        <OpeningContours progress={progress} />
 
         <group>
           <CampusModel
@@ -87,6 +107,11 @@ export const AtlasScene = ({ content, progress, onSceneReady }: AtlasSceneProps)
             color="#e9eef8"
           />
         </Float>
+
+        <EffectComposer>
+          <Bloom intensity={0.4} luminanceThreshold={0.6} luminanceSmoothing={0.9} />
+          <Vignette eskil={false} offset={0.15} darkness={0.6} />
+        </EffectComposer>
       </Suspense>
     </Canvas>
   )
