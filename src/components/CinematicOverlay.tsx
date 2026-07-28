@@ -79,7 +79,7 @@ export const CinematicOverlay = ({
         <p>{content.timeline.openingPrompt}</p>
       </div>
 
-      <aside className={`overlay-chapter ${finalVisible || displayMode ? 'hidden' : ''}`}>
+      <aside className={`overlay-chapter ${finalVisible ? 'hidden' : ''}`}>
         <p className="eyebrow">{chapter.headline}</p>
         <h1>{chapter.title}</h1>
         <p className="description">{chapter.description}</p>
