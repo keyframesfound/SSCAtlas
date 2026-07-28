@@ -7,9 +7,21 @@ type CinematicOverlayProps = {
   content: AtlasContent
   progress: number
   loading: boolean
+  displayMode: boolean
+  fullscreen: boolean
+  onToggleDisplayMode: () => void
+  onToggleFullscreen: () => void
 }
 
-export const CinematicOverlay = ({ content, progress, loading }: CinematicOverlayProps) => {
+export const CinematicOverlay = ({
+  content,
+  progress,
+  loading,
+  displayMode,
+  fullscreen,
+  onToggleDisplayMode,
+  onToggleFullscreen,
+}: CinematicOverlayProps) => {
   const [expanded, setExpanded] = useState(false)
   const chapter = useMemo(
     () => chapterAtProgress(content.timeline.chapters, progress),
@@ -26,8 +38,8 @@ export const CinematicOverlay = ({ content, progress, loading }: CinematicOverla
       .filter((profile): profile is NonNullable<typeof profile> => Boolean(profile))
   }, [chapter.focusBuildingIds, profileMap])
 
-  const openingVisible = progress < 0.08
-  const finalVisible = chapter.kind === 'finale'
+  const openingVisible = progress < 0.08 && !displayMode
+  const finalVisible = chapter.kind === 'finale' && !displayMode
 
   useEffect(() => {
     const previousOverflow = document.body.style.overflow
@@ -50,6 +62,15 @@ export const CinematicOverlay = ({ content, progress, loading }: CinematicOverla
         <p>Loading SSC Atlas</p>
       </div>
 
+      <div className="overlay-controls" aria-label="Overlay controls">
+        <button type="button" onClick={onToggleFullscreen}>
+          {fullscreen ? 'Exit Fullscreen' : 'Fullscreen'}
+        </button>
+        <button type="button" onClick={onToggleDisplayMode}>
+          {displayMode ? 'Exit Display Mode' : 'Display Mode'}
+        </button>
+      </div>
+
       <div className="overlay-progress" aria-hidden="true">
         <span style={{ transform: `scaleX(${progress})` }} />
       </div>
@@ -58,7 +79,7 @@ export const CinematicOverlay = ({ content, progress, loading }: CinematicOverla
         <p>{content.timeline.openingPrompt}</p>
       </div>
 
-      <aside className={`overlay-chapter ${finalVisible ? 'hidden' : ''}`}>
+      <aside className={`overlay-chapter ${finalVisible || displayMode ? 'hidden' : ''}`}>
         <p className="eyebrow">{chapter.headline}</p>
         <h1>{chapter.title}</h1>
         <p className="description">{chapter.description}</p>

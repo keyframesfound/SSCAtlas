@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useProgress } from '@react-three/drei'
 import { useAtlasContent } from './hooks/use-atlas-content'
 import { useLenisScroll } from './hooks/use-lenis-scroll'
@@ -9,14 +9,76 @@ import { isDebugMode } from './lib/debug'
 import { AtlasScene } from './scene/AtlasScene'
 
 const SCROLL_HEIGHT_VH = 1400
+const AUTOPLAY_DURATION_MS = 42000
 
 function App() {
   const debugMode = isDebugMode()
-  const progress = useLenisScroll()
+  const scrollProgress = useLenisScroll()
   const { data, loading, error } = useAtlasContent()
   const { progress: assetProgress } = useProgress()
   const [sceneReady, setSceneReady] = useState(false)
+  const [displayMode, setDisplayMode] = useState(false)
+  const [fullscreen, setFullscreen] = useState(false)
+  const stageContainerRef = useRef<HTMLDivElement | null>(null)
+  const [autoplayProgress, setAutoplayProgress] = useState(0)
+  const progress = displayMode ? autoplayProgress : scrollProgress
   const showLoadingPage = loading || !data || !sceneReady
+
+  useEffect(() => {
+    if (!displayMode) return
+
+    let frameId = 0
+    let startedAt = 0
+
+    const tick = (timestamp: number) => {
+      if (!startedAt) {
+        startedAt = timestamp
+      }
+
+      const elapsed = timestamp - startedAt
+      const normalized = (elapsed % AUTOPLAY_DURATION_MS) / AUTOPLAY_DURATION_MS
+      setAutoplayProgress(normalized)
+      frameId = window.requestAnimationFrame(tick)
+    }
+
+    frameId = window.requestAnimationFrame(tick)
+
+    return () => {
+      window.cancelAnimationFrame(frameId)
+    }
+  }, [displayMode])
+
+  useEffect(() => {
+    if (displayMode) {
+      setAutoplayProgress(0)
+    }
+  }, [displayMode])
+
+  useEffect(() => {
+    const syncFullscreen = () => {
+      setFullscreen(document.fullscreenElement === stageContainerRef.current)
+    }
+
+    syncFullscreen()
+    document.addEventListener('fullscreenchange', syncFullscreen)
+
+    return () => {
+      document.removeEventListener('fullscreenchange', syncFullscreen)
+    }
+  }, [])
+
+  const toggleFullscreen = async () => {
+    const target = stageContainerRef.current
+
+    if (!target) return
+
+    if (document.fullscreenElement === target) {
+      await document.exitFullscreen?.()
+      return
+    }
+
+    await target.requestFullscreen?.()
+  }
 
   if (error) {
     return (
@@ -34,9 +96,17 @@ function App() {
           <DebugExplorer content={data} onSceneReady={setSceneReady} />
         ) : (
           <>
-            <div className="atlas-stage">
+            <div ref={stageContainerRef} className="atlas-stage">
               <AtlasScene content={data} progress={progress} onSceneReady={setSceneReady} />
-              <CinematicOverlay content={data} progress={progress} loading={showLoadingPage} />
+              <CinematicOverlay
+                content={data}
+                progress={progress}
+                loading={showLoadingPage}
+                displayMode={displayMode}
+                fullscreen={fullscreen}
+                onToggleDisplayMode={() => setDisplayMode((value) => !value)}
+                onToggleFullscreen={toggleFullscreen}
+              />
             </div>
 
             <div className="scroll-track" style={{ height: `${SCROLL_HEIGHT_VH}vh` }} aria-hidden="true" />
