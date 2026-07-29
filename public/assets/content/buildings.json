@@ -9,25 +9,33 @@
     "id": "SchoolHouse",
     "name": "School House",
     "chapter": "The Heart of the College",
-    "description": "The architectural centrepiece where heritage masonry meets contemporary learning life."
+    "year": "1929/1930",
+    "grade": "Declared Monument",
+    "description": "Completed in 1929 and inaugurated in 1930, the School House is the oldest surviving boarding-school building in Hong Kong and a declared monument. Its H-shaped design combines Western classical columns and arches with a Chinese-style roof suited to Hong Kong's climate. It now accommodates dormitories, classrooms, staff rooms, music rooms, and the College Library."
   },
   {
     "id": "MartinHostel",
     "name": "Martin Hostel",
     "chapter": "A Tradition of Boarding",
-    "description": "Warmly lit facades and courtyards that define the college's boarding tradition."
+    "year": "1929",
+    "grade": "Grade II Historic Building",
+    "description": "Built in 1929, Martin Hostel was later named in honour of Rev. Canon E. W. L. Martin, Principal and Warden from 1928 to 1953. This Grade II historic building retains much of its original timber flooring and blends European arches and granite columns with a Chinese-style roof. It continues to serve as a student hostel and includes dining, staff, and laundry facilities."
   },
   {
     "id": "Chapel",
     "name": "Chapel",
     "chapter": "A Place of Reflection",
-    "description": "A symmetrical sanctuary where light, proportion, and stillness guide the experience."
+    "year": "1950",
+    "grade": "Grade III Historic Building",
+    "description": "Opened in 1950 at the highest point of the campus, St. Stephen's Chapel is a Grade III historic building. It was built as a memorial to people who suffered and died during the Second World War and the Japanese occupation, including victims associated with the Stanley Internment Camp. The Chapel remains a place for worship, prayer, school services, and remembrance."
   },
   {
     "id": "ClassroomBlock",
     "name": "Classroom Block",
     "chapter": "The Academic Core",
-    "description": "Modern teaching spaces threaded through tree-lined circulation and terraces."
+    "year": "1964",
+    "grade": "Grade III Historic Building",
+    "description": "The Classroom Block was built in 1964 to provide additional teaching space for the growing College. It reflects the post-war development of the campus and is listed as a Grade III historic building. It continues to house classrooms for daily teaching and learning."
   },
   {
     "id": "Library",
@@ -39,13 +47,17 @@
     "id": "ScienceCentre",
     "name": "Special Room Block",
     "chapter": "Innovation in Practice",
-    "description": "Strong geometric volumes expressing experimentation, discovery, and future thinking."
+    "year": "1980",
+    "grade": "HKIA Merit Award 1982",
+    "description": "The Special Room Block was opened in 1980 on the site of a former tennis court, replacing the old laboratory as the College expanded its specialist facilities. Designed by Dr. Tao Ho, its distinctive sloping walls and corridor layout earned a Hong Kong Institute of Architects Merit Award in 1982. The building now contains classrooms, science laboratories, computer rooms, and specialised teaching spaces."
   },
   {
     "id": "NgWahHall",
     "name": "Ng Wah Hall",
     "chapter": "Gathering at Scale",
-    "description": "A large assembly volume designed for milestone moments and collective celebration."
+    "year": "1970",
+    "grade": "Grade III Historic Building",
+    "description": "Ng Wah Hall was completed in 1970, during a period when St. Stephen's College was expanding after becoming co-educational. It provides a dedicated indoor venue for assemblies, performances, ceremonies, and other large school events. The hall is also listed as a Grade III historic building."
   },
   {
     "id": "TangShiuKinHall",
@@ -57,31 +69,41 @@
     "id": "BenevolenceHouse",
     "name": "Benevolence House",
     "chapter": "Community in Action",
-    "description": "A warm, human-scaled setting centered on wellbeing and connection."
+    "year": "2022",
+    "grade": "Contemporary Addition",
+    "description": "Benevolence House was inaugurated in 2022 as a major contemporary addition to the campus. Its design connects the historic school buildings with the sports field, while its sea-facing side contains classrooms and the Carol Yang Black Box Theatre. It now provides classrooms, a grand hall, an indoor fitness centre, student facilities, and an outdoor auditorium."
   },
   {
     "id": "LeungKauKuiStudentCentre",
     "name": "Leung Kau Kui Student Centre",
     "chapter": "Student Life",
-    "description": "An active social anchor shaped by leadership, friendship, and campus rhythm."
+    "year": "1988",
+    "grade": "Student Facility",
+    "description": "The Leung Kau Kui Student Centre was completed in 1988 to provide additional student-focused learning space. Its construction reflects the College's effort to broaden facilities beyond the original historic core of the campus. It is now used for classrooms and student activities."
   },
   {
     "id": "NorthHouse",
     "name": "North House",
     "chapter": "Living on Campus",
-    "description": "One half of a paired residential chapter rooted in belonging and tradition."
+    "year": "1952",
+    "grade": "Post-war Residential Building",
+    "description": "North House was completed in 1952 as part of the College's post-war rebuilding and recovery. It helped restore and expand the College's residential capacity after the wartime damage to the campus. Today, it remains a student dormitory."
   },
   {
     "id": "CollegeHouse",
     "name": "College House",
     "chapter": "Living on Campus",
-    "description": "A companion residential volume that completes the boarding community."
+    "year": "2011-2012",
+    "grade": "Modern Boarding Residence",
+    "description": "College House was completed in 2011-12 as a modern two-wing residence for boarders. It expanded the College's long tradition of boarding education, which has been central to school life since its founding. It continues to provide dormitory accommodation for students."
   },
   {
     "id": "HeritageGallery",
     "name": "Heritage Gallery",
     "chapter": "Where Heritage Lives",
-    "description": "A preserved narrative in crafted materials, details, and memory."
+    "year": "1931 / restored 2011",
+    "grade": "Grade II Historic Building",
+    "description": "Bungalow No. 3 was constructed in 1931 as staff quarters and has retained much of its original cottage-like character. After restoration supported by heritage funding, it was converted into the Heritage Gallery in 2011. The Grade II historic building now displays artefacts and stories about the College, the Battle of Hong Kong, and the Stanley Internment Camp."
   },
   {
     "id": "CentralSquare",
@@ -99,6 +121,8 @@
     "id": "BigField",
     "name": "Big Field",
     "chapter": "Space to Compete",
-    "description": "A vast athletic landscape framed by architecture, woodland, and coastline."
+    "year": "1920s origin / re-turfed 1975",
+    "grade": "Historic Campus Landscape",
+    "description": "The Tang Shiu Kin Sports Field began as a swamp that was filled in during the 1920s to reduce the risk of malaria. During the Japanese occupation, it became a vegetable garden connected with the Stanley Internment Camp, and it was renamed after Sir Tang Shiu Kin funded its re-turfing in 1975. Following later refurbishments, it now provides a football pitch, athletics facilities, and space for physical education."
   }
 ]
