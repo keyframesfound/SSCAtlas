@@ -11,6 +11,7 @@
   --accent-gold: #f5c36f;
   --font-sans: 'Inter', 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
   --font-display: 'Inter', 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+  --app-height: 100dvh;
 
   font-family: var(--font-sans);
   font-synthesis: none;
@@ -23,6 +24,11 @@
   box-sizing: border-box;
 }
 
+html {
+  height: 100%;
+  overflow-x: hidden;
+}
+
 html,
 body,
 #root {
@@ -32,6 +38,12 @@ body,
 }
 
 body {
+  min-height: 100dvh;
+  min-height: 100svh;
+  overflow-x: hidden;
+  overscroll-behavior: none;
+  -webkit-text-size-adjust: 100%;
+  touch-action: manipulation;
   color: var(--soft-white);
   background:
     radial-gradient(circle at 12% 16%, rgba(67, 94, 142, 0.26), transparent 34%),
@@ -45,7 +57,7 @@ body {
 }
 
 .debug-shell {
-  min-height: 100vh;
+  min-height: var(--app-height);
   display: grid;
   grid-template-columns: minmax(0, 1fr) 24rem;
   background: #050608;
@@ -53,7 +65,7 @@ body {
 
 .debug-stage {
   position: relative;
-  min-height: 100vh;
+  min-height: var(--app-height);
 }
 
 .debug-hud {
@@ -146,6 +158,8 @@ body {
 .atlas-stage {
   position: fixed;
   inset: 0;
+  min-height: var(--app-height);
+  height: var(--app-height);
   overflow: clip;
 }
 
@@ -240,10 +254,13 @@ body {
 
 .overlay-controls {
   position: absolute;
-  top: 1rem;
-  right: 1rem;
+  top: max(0.75rem, env(safe-area-inset-top));
+  right: max(0.75rem, env(safe-area-inset-right));
   display: flex;
-  gap: 0.7rem;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.55rem;
+  max-width: calc(100vw - 1rem);
   z-index: 25;
 }
 
@@ -252,12 +269,13 @@ body {
   border-radius: 999px;
   background: rgba(5, 6, 8, 0.62);
   color: var(--soft-white);
-  padding: 0.6rem 0.9rem;
+  padding: 0.58rem 0.8rem;
   text-transform: uppercase;
   letter-spacing: 0.14em;
-  font-size: 0.62rem;
+  font-size: 0.58rem;
   cursor: pointer;
   backdrop-filter: blur(12px);
+  white-space: nowrap;
 }
 
 .overlay-controls button:hover {
@@ -311,7 +329,9 @@ body {
 .overlay-scroll {
   position: absolute;
   left: 50%;
-  bottom: 10vh;
+  bottom: clamp(5.5rem, 16vh, 7rem);
+  width: min(100%, 20rem);
+  padding: 0 1rem;
   translate: -50% 18px;
   opacity: 0;
   transition: opacity 500ms ease, translate 500ms ease;
@@ -326,18 +346,21 @@ body {
 
 .overlay-scroll p {
   margin: 0;
+  text-align: center;
   text-transform: uppercase;
   letter-spacing: 0.26em;
-  font-size: 0.74rem;
+  font-size: 0.72rem;
   color: var(--muted-white);
 }
 
 .overlay-chapter {
   position: absolute;
-  left: clamp(1rem, 5vw, 4rem);
-  bottom: clamp(1rem, 9vh, 6.5rem);
-  width: min(42rem, calc(100vw - 2rem));
-  padding: 1rem 1.1rem 1.05rem;
+  left: clamp(0.75rem, 2.4vw, 1.5rem);
+  bottom: max(0.75rem, env(safe-area-inset-bottom));
+  width: min(42rem, calc(100vw - 1.5rem));
+  max-height: min(54vh, 20rem);
+  overflow: auto;
+  padding: 0.95rem 1rem 1rem;
   border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 1rem;
   background:
@@ -369,7 +392,7 @@ body {
   letter-spacing: -0.03em;
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: clamp(2.2rem, 5.5vw, 6rem);
+  font-size: clamp(1.85rem, 5.3vw, 6rem);
   color: var(--soft-white);
 }
 
@@ -592,7 +615,7 @@ body {
 
 .loading-shell,
 .error-shell {
-  min-height: 100vh;
+  min-height: var(--app-height);
   display: grid;
   place-items: center;
   text-align: center;
@@ -623,10 +646,22 @@ body {
     border-top: 1px solid rgba(244, 245, 247, 0.1);
   }
 
+  .overlay-controls {
+    top: max(0.6rem, env(safe-area-inset-top));
+    right: max(0.6rem, env(safe-area-inset-right));
+    gap: 0.45rem;
+  }
+
+  .overlay-controls button {
+    padding: 0.5rem 0.7rem;
+    font-size: 0.54rem;
+  }
+
   .overlay-chapter {
-    width: calc(100vw - 1.5rem);
-    left: 0.75rem;
-    bottom: 1.35rem;
+    width: calc(100vw - 1rem);
+    left: 0.5rem;
+    bottom: max(0.65rem, env(safe-area-inset-bottom));
+    padding: 0.9rem 0.95rem 1rem;
   }
 
   .overlay-chapter .description {
@@ -634,10 +669,28 @@ body {
     max-width: 30ch;
   }
 
+  .overlay-scroll {
+    bottom: clamp(4.6rem, 15vh, 6.2rem);
+    width: min(100%, 16rem);
+  }
+
+  .overlay-scroll p {
+    font-size: 0.62rem;
+  }
+
   .overlay-reveal,
   .overlay-finale {
-    width: calc(100vw - 1.5rem);
-    inset: auto 0 9vh;
+    width: calc(100vw - 1rem);
+    inset: auto 0 8vh;
+    padding: 0.92rem 1rem 1rem;
+  }
+
+  .overlay-finale h2 {
+    font-size: clamp(1.55rem, 6.2vw, 2.7rem);
+  }
+
+  .overlay-finale p {
+    font-size: 0.9rem;
   }
 
   .details-panel.expanded {
