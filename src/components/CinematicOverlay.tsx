@@ -62,7 +62,14 @@ export const CinematicOverlay = ({
       <section className={`overlay-finale ${finalVisible ? 'visible' : ''}`}>
         <h2>{content.statistics.finalTitle}</h2>
         <p>{content.statistics.finalSubtitle}</p>
-        <button type="button">Arrange a Campus Visit</button>
+        <a
+          href="https://www.ssc.edu.hk/links/ssctrail/chi/docent.html"
+          target="_blank"
+          rel="noreferrer"
+          className="overlay-finale-link"
+        >
+          Arrange a Campus Visit
+        </a>
       </section>
 
       <div className="overlay-vignette" style={{ opacity: 0.22 + smoothstep(0.3, 1, progress) * 0.2 }} />

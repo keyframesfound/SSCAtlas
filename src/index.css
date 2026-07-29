@@ -574,7 +574,8 @@ body {
   letter-spacing: 0.04em;
 }
 
-.overlay-finale button {
+.overlay-finale button,
+.overlay-finale-link {
   margin-top: 1.8rem;
   border: 0;
   border-radius: 999px;
@@ -585,6 +586,8 @@ body {
   text-transform: uppercase;
   padding: 0.94rem 1.6rem;
   cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
 }
 
 .loading-shell,
