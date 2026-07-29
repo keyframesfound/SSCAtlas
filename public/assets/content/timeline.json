@@ -192,30 +192,7 @@
       "headline": "One Campus. One Legacy.",
       "title": "St. Stephen's College",
       "description": "For over a century, St. Stephen's College has united heritage, innovation, and the beauty of Stanley Peninsula into one of Hong Kong's most remarkable educational campuses.",
-      "cameraPathId": "finaleRise",
-      "focusBuildingIds": [
-        "SchoolHouse",
-        "MartinHostel",
-        "OldLaboratory",
-        "Bungalow1",
-        "Bungalow2",
-        "HeritageGallery",
-        "Bungalow4",
-        "Bungalow5",
-        "Chapel",
-        "NgWahHall",
-        "ClassroomBlock",
-        "NorthHouse",
-        "BigField",
-        "BenevolenceHouse",
-        "SpecialRoomBlock",
-        "WilsonWangWaterSportsCentre",
-        "AlexYDAuBuilding",
-        "LukeYipBuilding",
-        "LeungKauKuiStudentCentre",
-        "CentenaryBuilding",
-        "CollegeHouse"
-      ]
+      "cameraPathId": "finaleRise"
     }
   ]
 }

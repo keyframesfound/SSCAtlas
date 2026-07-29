@@ -3,7 +3,7 @@
   "tagline": "Hong Kong's Largest Secondary School Campus",
   "subline": "Over a century of learning, architecture and community overlooking the South China Sea.",
   "finalTitle": "St. Stephen's College",
-  "finalSubtitle": "Faith is the Foundation of Courage",
+  "finalSubtitle": "Fortitudinis Fundamentum Fides",
   "boundaryPoints": [
     [265.2, 290, 52.4],
     [271.7, 290, 70.7],
@@ -20,6 +20,6 @@
   "model": {
     "url": "/assets/models/ssc-campus.glb",
     "objectRoot": "SSC_Campus",
-    "replaceInstructions": "Replace /public/assets/models/ssc-campus.glb with the production campus model. Preserve named objects in the hierarchy for chapter targeting."
+    "replaceInstructions": ""
   }
 }
