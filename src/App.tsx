@@ -59,11 +59,22 @@ function App() {
       setFullscreen(document.fullscreenElement === stageContainerRef.current)
     }
 
+    const syncViewportHeight = () => {
+      const viewportHeight = window.visualViewport?.height ?? window.innerHeight
+      document.documentElement.style.setProperty('--app-height', `${viewportHeight}px`)
+    }
+
     syncFullscreen()
+    syncViewportHeight()
+
     document.addEventListener('fullscreenchange', syncFullscreen)
+    window.addEventListener('resize', syncViewportHeight)
+    window.visualViewport?.addEventListener('resize', syncViewportHeight)
 
     return () => {
       document.removeEventListener('fullscreenchange', syncFullscreen)
+      window.removeEventListener('resize', syncViewportHeight)
+      window.visualViewport?.removeEventListener('resize', syncViewportHeight)
     }
   }, [])
 
