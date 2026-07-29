@@ -60,14 +60,8 @@ export const CinematicOverlay = ({
       </aside>
 
       <section className={`overlay-finale ${finalVisible ? 'visible' : ''}`}>
-        <p className="crest-mark">SSC</p>
         <h2>{content.statistics.finalTitle}</h2>
         <p>{content.statistics.finalSubtitle}</p>
-        <div className="heritage-register">
-          {content.heritageProfiles.map((profile) => (
-            <p key={`register-${profile.id}`}>{profile.name}</p>
-          ))}
-        </div>
         <button type="button">Arrange a Campus Visit</button>
       </section>
 

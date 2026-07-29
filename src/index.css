@@ -561,19 +561,6 @@ body {
   pointer-events: auto;
 }
 
-.crest-mark {
-  margin: 0 auto 1rem;
-  width: 3rem;
-  height: 3rem;
-  border-radius: 50%;
-  border: 1px solid rgba(244, 245, 247, 0.35);
-  display: grid;
-  place-items: center;
-  letter-spacing: 0.13em;
-  font-size: 0.68rem;
-  color: var(--muted-white);
-}
-
 .overlay-finale h2 {
   margin: 0;
   font-size: clamp(2rem, 6vw, 4.4rem);
@@ -585,27 +572,6 @@ body {
   margin: 0.8rem 0 0;
   color: var(--muted-white);
   letter-spacing: 0.04em;
-}
-
-.heritage-register {
-  margin: 1.2rem auto 0;
-  max-width: min(50rem, 90vw);
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 0.4rem 0.5rem;
-}
-
-.heritage-register p {
-  margin: 0;
-  border: 1px solid rgba(244, 245, 247, 0.16);
-  border-radius: 999px;
-  padding: 0.3rem 0.62rem;
-  font-size: 0.62rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: rgba(244, 245, 247, 0.82);
-  background: rgba(5, 6, 8, 0.34);
 }
 
 .overlay-finale button {
